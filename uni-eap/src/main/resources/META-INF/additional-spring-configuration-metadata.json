@@ -1,0 +1,44 @@
+{"properties": [
+	{
+		"name": "cxf.jaxrs.classes-scan",
+		"type": "java.lang.String",
+		"description": "Configures Apache CXF to scan for JAX-RS annotated classes."
+	},
+	{
+		"name": "cxf.jaxrs.classes-scan-packages",
+		"type": "java.lang.String",
+		"description": "Configures the package(s) to be scanned by Apache CXF for classes containing JAX-RS annotations."
+	},
+	{
+		"name": "rest.api.contact",
+		"type": "java.lang.String",
+		"description": "Specifies the contact responsible for maintaining the REST API."
+	},
+	{
+		"name": "rest.api.version",
+		"type": "java.lang.String",
+		"description": "Specifies the version of the REST API."
+	}
+]}
+{"properties": [
+	{
+		"name": "cxf.jaxrs.classes-scan",
+		"type": "java.lang.String",
+		"description": "Configures Apache CXF to scan for JAX-RS annotated classes."
+	},
+	{
+		"name": "cxf.jaxrs.classes-scan-packages",
+		"type": "java.lang.String",
+		"description": "Configures the package(s) to be scanned by Apache CXF for classes containing JAX-RS annotations."
+	},
+	{
+		"name": "rest.api.contact",
+		"type": "java.lang.String",
+		"description": "Specifies the contact responsible for maintaining the REST API."
+	},
+	{
+		"name": "rest.api.version",
+		"type": "java.lang.String",
+		"description": "Specifies the version of the REST API."
+	}
+]}
