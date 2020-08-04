@@ -55,7 +55,6 @@ public class Person extends GeneratedValueIdEntity {
 	@Property(name="FIRST_NAME")
 	private String fname;
 
-	@NonNull
 	@Property(name="MIDDLE_NAME")
 	private String mname;
 
@@ -63,7 +62,6 @@ public class Person extends GeneratedValueIdEntity {
 	@Property(name="LAST_NAME")
 	private String lname;
 
-	@NonNull
 	@DateLong
 	@Property(name="BIRTH_DATE")
 	private Date dob;
