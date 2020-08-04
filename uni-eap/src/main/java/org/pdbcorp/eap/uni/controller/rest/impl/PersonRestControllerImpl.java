@@ -40,6 +40,11 @@ public class PersonRestControllerImpl implements PersonRestController {
 	}
 
 	@Override
+	public Response findByFname(String fname) {
+		return Response.ok(personDetailsService.findByFname(fname)).build();
+	}
+
+	@Override
 	public Response savePerson(Person person) {
 		return Response.ok(personDetailsService.savePerson(person)).build();
 	}

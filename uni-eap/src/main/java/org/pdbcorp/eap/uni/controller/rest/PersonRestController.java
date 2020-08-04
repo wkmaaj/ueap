@@ -18,8 +18,10 @@
 package org.pdbcorp.eap.uni.controller.rest;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -34,6 +36,10 @@ import org.pdbcorp.eap.uni.data.model.Person;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface PersonRestController {
+
+	@GET
+	@Path("/find/{fname}")
+	Response findByFname(@PathParam("fname") String fname);
 
 	@POST
 	@Path("/save")
