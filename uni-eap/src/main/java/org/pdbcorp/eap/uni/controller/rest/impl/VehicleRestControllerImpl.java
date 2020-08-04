@@ -23,13 +23,13 @@ import org.pdbcorp.eap.uni.controller.rest.VehicleRestController;
 import org.pdbcorp.eap.uni.data.model.Vehicle;
 import org.pdbcorp.eap.uni.service.impl.VehicleDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 
 /**
  * 
  * @author jaradat-pdb
  */
-@Service
+@Controller
 public class VehicleRestControllerImpl implements VehicleRestController {
 
 	private VehicleDetailsService vehicleDetailsService;

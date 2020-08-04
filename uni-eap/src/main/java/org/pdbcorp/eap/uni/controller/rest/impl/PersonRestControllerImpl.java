@@ -23,13 +23,13 @@ import org.pdbcorp.eap.uni.controller.rest.PersonRestController;
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.service.impl.PersonDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 
 /**
  * 
  * @author jaradat-pdb
  */
-@Service
+@Controller
 public class PersonRestControllerImpl implements PersonRestController {
 
 	private PersonDetailsService personDetailsService;
