@@ -64,7 +64,7 @@ class PersonRepositoryIT {
 		entity = repo.save(entity);
 		log.debug("{}", entity);
 		assertFalse(StringUtils.isBlank(entity.getId()));
-		for(Address address : entity.getAddress()) {
+		for(Address address : entity.getAddresses()) {
 			assertFalse(StringUtils.isBlank(address.getId()));
 		}
 	}
@@ -77,7 +77,7 @@ class PersonRepositoryIT {
 		log.debug("{}", entity);
 		assertFalse(StringUtils.isBlank(entity.getId()));
 		assertFalse(StringUtils.isBlank(entity.getOccupation().getId()));
-		for(Address address : entity.getAddress()) {
+		for(Address address : entity.getAddresses()) {
 			assertFalse(StringUtils.isBlank(address.getId()));
 		}
 	}
@@ -91,7 +91,7 @@ class PersonRepositoryIT {
 		assertFalse(StringUtils.isBlank(entity.getId()));
 		assertFalse(StringUtils.isBlank(entity.getOccupation().getId()));
 		assertFalse(StringUtils.isBlank(entity.getVehicle().getId()));
-		for(Address address : entity.getAddress()) {
+		for(Address address : entity.getAddresses()) {
 			assertFalse(StringUtils.isBlank(address.getId()));
 		}
 	}
@@ -104,7 +104,7 @@ class PersonRepositoryIT {
 		log.debug("{}", entity);
 		assertFalse(StringUtils.isBlank(entity.getId()));
 		assertFalse(StringUtils.isBlank(entity.getOccupation().getId()));
-		for(Address address : entity.getAddress()) {
+		for(Address address : entity.getAddresses()) {
 			assertFalse(StringUtils.isBlank(address.getId()));
 		}
 	}
@@ -118,7 +118,7 @@ class PersonRepositoryIT {
 		assertFalse(StringUtils.isBlank(entity.getId()));
 		assertFalse(StringUtils.isBlank(entity.getOccupation().getId()));
 		assertFalse(StringUtils.isBlank(entity.getVehicle().getId()));
-		for(Address address : entity.getAddress()) {
+		for(Address address : entity.getAddresses()) {
 			assertFalse(StringUtils.isBlank(address.getId()));
 		}
 	}
@@ -131,7 +131,7 @@ class PersonRepositoryIT {
 		log.debug("{}", entity);
 		assertFalse(StringUtils.isBlank(entity.getId()));
 		assertFalse(StringUtils.isBlank(entity.getVehicle().getId()));
-		for(Address address : entity.getAddress()) {
+		for(Address address : entity.getAddresses()) {
 			assertFalse(StringUtils.isBlank(address.getId()));
 		}
 	}
