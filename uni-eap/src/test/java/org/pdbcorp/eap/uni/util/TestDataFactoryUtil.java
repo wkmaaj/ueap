@@ -43,7 +43,7 @@ public final class TestDataFactoryUtil {
 	public static final Address generateAddressInstanceWithPerson() throws ParseException {
 		Address address = generateAddressInstance();
 		Person person = generatePersonInstance();
-		person.getAddress().add(address);
+		person.getAddresses().add(address);
 		address.getPersons().add(person);
 		return address;
 	}
@@ -132,7 +132,7 @@ public final class TestDataFactoryUtil {
 		Person person = generatePersonInstance();
 		Address address = generateAddressInstance();
 		address.getPersons().add(person);
-		person.getAddress().add(address);
+		person.getAddresses().add(address);
 		return person;
 	}
 
