@@ -19,6 +19,7 @@ package org.pdbcorp.eap.uni.data.repo;
 
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -27,5 +28,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PersonRepository extends Neo4jRepository<Person, String> {
+
+	public Person findByFname(@Param("fname") String fname);
 
 }

@@ -40,6 +40,10 @@ public class PersonDetailsService extends BaseEntityDetailsService<Person> {
 		this.personRepository = personRepository;
 	}
 
+	public Person findByFname(String fname) {
+		return personRepository.findByFname(fname);
+	}
+
 	public Person savePerson(Person person) {
 		if(log.isTraceEnabled()) {
 			log.trace("Saving entity: {}", person);
