@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
 import lombok.AllArgsConstructor;
@@ -47,6 +48,7 @@ import lombok.Setter;
 public class Course extends GeneratedValueIdEntity {
 
 	@NonNull
+	@Property(name="NAME")
 	private String name;
 
 	@Relationship(type="SUBJECT_TAUGHT")

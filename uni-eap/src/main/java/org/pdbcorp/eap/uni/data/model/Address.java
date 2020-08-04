@@ -26,6 +26,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -41,7 +43,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Getter
-@NodeEntity
+@NodeEntity(label="ADDRESS")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
@@ -72,10 +74,12 @@ public class Address extends GeneratedValueIdEntity {
 	private String postalCode;
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("addresses")
 	@Relationship(type="RESIDED_ADDRESS", direction=Relationship.INCOMING)
 	private Set<Person> persons = new HashSet<>();
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("address")
 	@Relationship(type="UNI_ADDRESS", direction=Relationship.INCOMING)
 	private University university;
 

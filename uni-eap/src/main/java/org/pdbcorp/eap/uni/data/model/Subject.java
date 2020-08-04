@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
 import lombok.AllArgsConstructor;
@@ -40,13 +41,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Getter
-@NodeEntity
+@NodeEntity(label="SUBJECT")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 public class Subject extends GeneratedValueIdEntity {
 
 	@NonNull
+	@Property(name="NAME")
 	private String name;
 
 	@NonNull

@@ -41,7 +41,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Getter
-@NodeEntity
+@NodeEntity(label="TEACHER")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter

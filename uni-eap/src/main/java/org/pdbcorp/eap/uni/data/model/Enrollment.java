@@ -24,6 +24,8 @@ import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -53,8 +55,9 @@ public class Enrollment extends GeneratedValueIdEntity {
 	@EndNode
 	private Course course;
 
-	@NonNull
 	@DateLong
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	@NonNull
 	private Date enrolledDate;
 
 	@Override

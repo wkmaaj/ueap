@@ -21,6 +21,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,7 +38,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Getter
-@NodeEntity
+@NodeEntity(label="VEHICLE")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
@@ -62,6 +64,7 @@ public class Vehicle extends GeneratedValueIdEntity {
 	@Property(name="VEHICLE_ID_NUMBER")
 	private String vin;
 
+	@JsonIgnoreProperties("vehicle")
 	@Relationship(type="OWNED_VEHICLE", direction=Relationship.INCOMING)
 	private Person person;
 

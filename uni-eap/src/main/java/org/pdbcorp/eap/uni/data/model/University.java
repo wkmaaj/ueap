@@ -23,7 +23,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -40,15 +43,17 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Getter
-@NodeEntity
+@NodeEntity(label="UNIVERSITY")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 public class University extends GeneratedValueIdEntity {
 
 	@NonNull
+	@Property(name="NAME")
 	private String name;
 
+	@JsonIgnoreProperties("university")
 	@Relationship(type="UNI_ADDRESS")
 	private Address address;
 

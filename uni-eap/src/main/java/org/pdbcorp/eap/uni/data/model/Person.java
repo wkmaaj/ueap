@@ -30,6 +30,9 @@ import org.neo4j.ogm.annotation.typeconversion.DateLong;
 import org.neo4j.ogm.annotation.typeconversion.EnumString;
 import org.pdbcorp.eap.uni.data.constant.GenderEnum;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -63,6 +66,7 @@ public class Person extends GeneratedValueIdEntity {
 	private String lname;
 
 	@DateLong
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	@Property(name="BIRTH_DATE")
 	private Date dob;
 
@@ -75,10 +79,12 @@ public class Person extends GeneratedValueIdEntity {
 	private OccupationEntity occupation;
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("persons")
 	@Relationship(type="RESIDED_ADDRESS")
-	private Set<Address> address = new HashSet<>();
+	private Set<Address> addresses = new HashSet<>();
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("person")
 	@Relationship(type="OWNED_VEHICLE")
 	private Vehicle vehicle;
 
@@ -115,9 +121,9 @@ public class Person extends GeneratedValueIdEntity {
 			builder.append(", occupationId=");
 			builder.append(occupation.getId());
 		}
-		if (address != null) {
+		if (addresses != null) {
 			builder.append(", address=");
-			builder.append(toString(address, maxLen));
+			builder.append(toString(addresses, maxLen));
 		}
 		if (vehicle != null) {
 			builder.append(", vehicleId=");
