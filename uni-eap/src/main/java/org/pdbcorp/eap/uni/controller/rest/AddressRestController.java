@@ -17,8 +17,11 @@
  */
 package org.pdbcorp.eap.uni.controller.rest;
 
+import java.util.Collection;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -27,6 +30,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.data.model.Address;
+import org.pdbcorp.eap.uni.data.model.Person;
+import org.pdbcorp.eap.uni.data.model.University;
 
 /**
  * 
@@ -38,11 +43,23 @@ import org.pdbcorp.eap.uni.data.model.Address;
 public interface AddressRestController {
 
 	@GET
+	@Path("/find")
+	Collection<Address> findAll();
+
+	@GET
 	@Path("/find/{addrLine1}")
 	Response findByAddrLine1(@PathParam("addrLine1") String addrLine1);
 
 	@POST
 	@Path("/save")
 	Response saveAddress(Address address);
+
+	@PATCH
+	@Path("/update/{id}/person")
+	Response updateWithPerson(@PathParam("id") String id, Person person);
+
+	@PATCH
+	@Path("/update/{id}/university")
+	Response updateWithUniversity(@PathParam("id") String id, University university);
 
 }

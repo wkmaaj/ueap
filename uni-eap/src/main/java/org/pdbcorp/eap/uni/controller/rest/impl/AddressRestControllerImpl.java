@@ -17,10 +17,14 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
+import java.util.Collection;
+
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.AddressRestController;
 import org.pdbcorp.eap.uni.data.model.Address;
+import org.pdbcorp.eap.uni.data.model.Person;
+import org.pdbcorp.eap.uni.data.model.University;
 import org.pdbcorp.eap.uni.service.impl.AddressDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,12 +44,31 @@ public class AddressRestControllerImpl implements AddressRestController {
 	}
 
 	@Override
+	public Collection<Address> findAll() {
+		return addressDetailsService.findAll();
+	}
+
+	@Override
 	public Response findByAddrLine1(String addrLine1) {
 		return Response.ok(addressDetailsService.findByAddrLine1(addrLine1)).build();
 	}
 
 	@Override
 	public Response saveAddress(Address address) {
+		return Response.ok(addressDetailsService.saveAddress(address)).build();
+	}
+
+	@Override
+	public Response updateWithPerson(String id, Person person) {
+		Address address = addressDetailsService.findByEntityId(id);
+		address.getPersons().add(person);
+		return Response.ok(addressDetailsService.saveAddress(address)).build();
+	}
+
+	@Override
+	public Response updateWithUniversity(String id, University university) {
+		Address address = addressDetailsService.findByEntityId(id);
+		address.setUniversity(university);
 		return Response.ok(addressDetailsService.saveAddress(address)).build();
 	}
 
