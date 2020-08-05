@@ -17,6 +17,8 @@
  */
 package org.pdbcorp.eap.uni.controller.rest;
 
+import java.util.Collection;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -36,6 +38,10 @@ import org.pdbcorp.eap.uni.data.model.Person;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface PersonRestController {
+
+	@GET
+	@Path("/find")
+	Collection<Person> findAll();
 
 	@GET
 	@Path("/find/{fname}")

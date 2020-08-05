@@ -17,6 +17,8 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
+import java.util.Collection;
+
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.PersonRestController;
@@ -37,6 +39,11 @@ public class PersonRestControllerImpl implements PersonRestController {
 	@Autowired
 	public PersonRestControllerImpl(PersonDetailsService personDetailsService) {
 		this.personDetailsService = personDetailsService;
+	}
+
+	@Override
+	public Collection<Person> findAll() {
+		return personDetailsService.findAll();
 	}
 
 	@Override

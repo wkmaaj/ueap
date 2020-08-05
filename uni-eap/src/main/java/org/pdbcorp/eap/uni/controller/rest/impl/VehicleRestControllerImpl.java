@@ -17,6 +17,8 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
+import java.util.Collection;
+
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.VehicleRestController;
@@ -37,6 +39,11 @@ public class VehicleRestControllerImpl implements VehicleRestController {
 	@Autowired
 	public VehicleRestControllerImpl(VehicleDetailsService vehicleDetailsService) {
 		this.vehicleDetailsService = vehicleDetailsService;
+	}
+
+	@Override
+	public Collection<Vehicle> findAll() {
+		return vehicleDetailsService.findAll();
 	}
 
 	@Override

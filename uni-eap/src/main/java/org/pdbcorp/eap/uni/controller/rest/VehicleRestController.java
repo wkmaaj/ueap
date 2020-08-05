@@ -17,7 +17,10 @@
  */
 package org.pdbcorp.eap.uni.controller.rest;
 
+import java.util.Collection;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -34,6 +37,10 @@ import org.pdbcorp.eap.uni.data.model.Vehicle;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public interface VehicleRestController {
+
+	@GET
+	@Path("/find")
+	Collection<Vehicle> findAll();
 
 	@POST
 	@Path("/save")
