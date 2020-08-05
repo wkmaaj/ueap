@@ -17,6 +17,8 @@
  */
 package org.pdbcorp.eap.uni.service.impl;
 
+import java.util.Collection;
+
 import org.pdbcorp.eap.uni.data.model.BaseEntity;
 import org.pdbcorp.eap.uni.error.EntityNotFoundException;
 import org.pdbcorp.eap.uni.service.EntityDetailsService;
@@ -32,6 +34,11 @@ abstract class BaseEntityDetailsService<T extends BaseEntity> implements EntityD
 
 	BaseEntityDetailsService(Neo4jRepository<T, String> repository) {
 		this.repository = repository;
+	}
+
+	@Override
+	public Collection<T> findAll() {
+		return (Collection<T>) repository.findAll();
 	}
 
 	@Override

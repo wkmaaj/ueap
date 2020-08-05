@@ -17,6 +17,8 @@
  */
 package org.pdbcorp.eap.uni.service;
 
+import java.util.Collection;
+
 import org.pdbcorp.eap.uni.data.model.BaseEntity;
 
 /**
@@ -24,6 +26,8 @@ import org.pdbcorp.eap.uni.data.model.BaseEntity;
  * @author jaradat-pdb
  */
 public interface EntityDetailsService<T extends BaseEntity> {
+
+	Collection<T> findAll();
 
 	T findByEntityId(String id);
 
