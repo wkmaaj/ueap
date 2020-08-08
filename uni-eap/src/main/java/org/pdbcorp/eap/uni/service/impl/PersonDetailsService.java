@@ -17,6 +17,8 @@
  */
 package org.pdbcorp.eap.uni.service.impl;
 
+import java.util.Collection;
+
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.data.repo.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ public class PersonDetailsService extends BaseEntityDetailsService<Person> {
 		this.personRepository = personRepository;
 	}
 
-	public Person findByFname(String fname) {
+	public Collection<Person> findByFname(String fname) {
 		return personRepository.findByFname(fname);
 	}
 
