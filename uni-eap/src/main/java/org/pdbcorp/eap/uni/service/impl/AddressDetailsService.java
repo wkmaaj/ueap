@@ -21,7 +21,7 @@ import java.util.Collection;
 
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.repo.AddressRepository;
-import org.pdbcorp.eap.uni.service.validation.impl.AddressExistsValidator;
+import org.pdbcorp.eap.uni.service.validation.impl.AddressValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +35,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AddressDetailsService extends BaseEntityDetailsService<Address> {
 
-	private AddressExistsValidator addressExistsValidator;
+	private AddressValidationService addressValidationService;
 	private AddressRepository addressRepository;
 
 	@Autowired
 	public AddressDetailsService(
-			AddressExistsValidator addressExistsValidator, AddressRepository addressRepository) {
+			AddressValidationService addressValidationService, AddressRepository addressRepository) {
 		super(addressRepository);
-		this.addressExistsValidator = addressExistsValidator;
+		this.addressValidationService = addressValidationService;
 		this.addressRepository = addressRepository;
 	}
 
@@ -54,13 +54,9 @@ public class AddressDetailsService extends BaseEntityDetailsService<Address> {
 		if(log.isTraceEnabled()) {
 			log.trace("Saving entity: {}", address);
 		}
-		if(!addressExistsValidator.validateSaveAddress(address)) {
-			address = addressRepository.save(address);
-			if(log.isDebugEnabled()) {
-				log.debug("Saved entity: {}", address);
-			}
-		} else {
-			log.warn("Following entity already exists: {}", address);
+		address = addressRepository.save(addressValidationService.validateExists(address));
+		if(log.isDebugEnabled()) {
+			log.debug("Saved entity: {}", address);
 		}
 		return address;
 	}
