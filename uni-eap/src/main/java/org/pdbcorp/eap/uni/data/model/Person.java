@@ -73,6 +73,9 @@ public class Person extends GeneratedValueIdEntity {
 	@Property(name="GENDER")
 	@EnumString(value=GenderEnum.class)
 	private GenderEnum gender;
+	
+	@Property(name="PROPS_UID")
+	private String propsUid;
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("person")
