@@ -41,7 +41,7 @@ import org.pdbcorp.eap.uni.data.model.Vehicle;
 public final class TestDataFactoryUtil {
 
 	public static final Address generateAddressInstanceWithPerson() throws ParseException {
-		Address address = generateAddressInstance();
+		Address address = generateAddressStateInstance();
 		Person person = generatePersonInstance();
 		person.getAddresses().add(address);
 		address.getPersons().add(person);
@@ -49,13 +49,13 @@ public final class TestDataFactoryUtil {
 	}
 
 	public static final Address generateAddressInstanceWithUniversity() {
-		Address address = generateAddressInstance();
+		Address address = generateAddressStateInstance();
 		address.setUniversity(generateUniversityInstance());
 		address.getUniversity().setAddress(address);
 		return address;
 	}
 
-	public static final Address generateAddressInstance() {
+	public static final Address generateAddressStateInstance() {
 		Address address = new Address();
 		address.setAddrLine1("123 Fake St");
 		address.setAddrLine2("Unit P");
@@ -63,6 +63,17 @@ public final class TestDataFactoryUtil {
 		address.setState("D.C.");
 		address.setCountry("USA");
 		address.setPostalCode("20001");
+		return address;
+	}
+
+	public static final Address generateAddressProvinceInstance() {
+		Address address = new Address();
+		address.setAddrLine1("321 Real Deal Blvd");
+		address.setAddrLine2("#69");
+		address.setCity("Toronto");
+		address.setProvince("Ontario");
+		address.setCountry("CA");
+		address.setPostalCode("001AE");
 		return address;
 	}
 
@@ -130,7 +141,7 @@ public final class TestDataFactoryUtil {
 
 	public static final Person generatePersonInstanceWithAddress() throws ParseException {
 		Person person = generatePersonInstance();
-		Address address = generateAddressInstance();
+		Address address = generateAddressStateInstance();
 		address.getPersons().add(person);
 		person.getAddresses().add(address);
 		return person;
@@ -222,14 +233,14 @@ public final class TestDataFactoryUtil {
 
 	public static final University generateUniversityInstanceWithAddressDepartment() {
 		University university = generateUniversityInstanceWithDepartment();
-		university.setAddress(generateAddressInstance());
+		university.setAddress(generateAddressStateInstance());
 		university.getAddress().setUniversity(university);
 		return university;
 	}
 
 	public static final University generateUniversityInstanceWithAddress() {
 		University university = generateUniversityInstance();
-		university.setAddress(generateAddressInstance());
+		university.setAddress(generateAddressStateInstance());
 		university.getAddress().setUniversity(university);
 		return university;
 	}

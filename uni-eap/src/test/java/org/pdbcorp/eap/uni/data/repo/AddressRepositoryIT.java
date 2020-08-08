@@ -54,7 +54,7 @@ class AddressRepositoryIT {
 	@DisplayName("Successfully save an ADDRESS node")
 	@Test
 	void validSaveTest() throws Exception {
-		Address entity = TestDataFactoryUtil.generateAddressInstance();
+		Address entity = TestDataFactoryUtil.generateAddressStateInstance();
 		entity = repo.save(entity);
 		log.debug("{}", entity);
 		assertFalse(StringUtils.isBlank(entity.getId()));
@@ -85,7 +85,7 @@ class AddressRepositoryIT {
 	@DisplayName("Successfully lookup an ADDRESS node by ADDR_LINE_1 field property")
 	@Test
 	void validFindByAddrLine1Test() throws Exception {
-		Address expected = repo.save(TestDataFactoryUtil.generateAddressInstance());
+		Address expected = repo.save(TestDataFactoryUtil.generateAddressStateInstance());
 		Collection<Address> result = repo.findByAddrLine1("123 Fake St");
 		assertTrue(result.contains(expected));
 	}
