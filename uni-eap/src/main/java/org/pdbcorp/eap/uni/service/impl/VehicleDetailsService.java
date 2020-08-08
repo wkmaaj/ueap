@@ -40,6 +40,10 @@ public class VehicleDetailsService extends BaseEntityDetailsService<Vehicle> {
 		this.vehicleRepository = vehicleRepository;
 	}
 
+	public Vehicle findByMakeAndModel(String make, String model) {
+		return vehicleRepository.findByMakeAndModel(make, model);
+	}
+
 	public Vehicle saveVehicle(Vehicle vehicle) {
 		if(log.isTraceEnabled()) {
 			log.trace("Saving entity: {}", vehicle);
