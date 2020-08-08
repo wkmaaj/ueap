@@ -17,6 +17,8 @@
  */
 package org.pdbcorp.eap.uni.data.repo;
 
+import java.util.Collection;
+
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
@@ -29,6 +31,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AddressRepository extends Neo4jRepository<Address, String> {
 
-	public Address findByAddrLine1(@Param("addrLine1") String addrLine1);
+	public Collection<Address> findByAddrLine1(@Param("addrLine1") String addrLine1);
+
+	public Collection<Address> findByAddrLine1AndAddrLine2AndCityAndCountry(
+			@Param("addrLine1") String addrLine1,
+			@Param("addrLine2") String addrLine2,
+			@Param("city") String city,
+			@Param("country") String country);
 
 }
