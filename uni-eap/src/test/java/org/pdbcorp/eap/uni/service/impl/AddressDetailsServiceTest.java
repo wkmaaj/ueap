@@ -17,8 +17,11 @@
  */
 package org.pdbcorp.eap.uni.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +31,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.repo.AddressRepository;
+import org.pdbcorp.eap.uni.service.validation.impl.AddressExistsValidator;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
 /**
@@ -38,18 +42,20 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 class AddressDetailsServiceTest {
 
 	@Mock
+	private AddressExistsValidator addressExistsValidator;
+	@Mock
 	private AddressRepository addressRepository;
 
 	@InjectMocks
-	private AddressDetailsService service = new AddressDetailsService(addressRepository);
+	private AddressDetailsService service = new AddressDetailsService(addressExistsValidator, addressRepository);
 
 	@DisplayName("Successfully query ADDRESS nodes using ADDR_LINE_1")
 	@Test
 	void validFindByAddrLine1Test() throws Exception {
 		Address expected = TestDataFactoryUtil.generateAddressInstance();
-		when(addressRepository.findByAddrLine1(expected.getAddrLine1())).thenReturn(expected);
-		Address actual = service.findByAddrLine1(expected.getAddrLine1());
-		assertEquals(expected, actual);
+		when(addressRepository.findByAddrLine1(expected.getAddrLine1())).thenReturn(Arrays.asList(expected));
+		Collection<Address> result = service.findByAddrLine1(expected.getAddrLine1());
+		assertTrue(result.contains(expected));
 	}
 
 }

@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.pdbcorp.eap.uni.service.impl;
+package org.pdbcorp.eap.uni.service.validation.impl;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.repo.AddressRepository;
-import org.pdbcorp.eap.uni.service.validation.impl.AddressExistsValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,36 +33,30 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class AddressDetailsService extends BaseEntityDetailsService<Address> {
+public class AddressExistsValidator {
 
-	private AddressExistsValidator addressExistsValidator;
 	private AddressRepository addressRepository;
 
 	@Autowired
-	public AddressDetailsService(
-			AddressExistsValidator addressExistsValidator, AddressRepository addressRepository) {
-		super(addressRepository);
-		this.addressExistsValidator = addressExistsValidator;
+	public AddressExistsValidator(AddressRepository addressRepository) {
 		this.addressRepository = addressRepository;
 	}
 
-	public Collection<Address> findByAddrLine1(String addrLine1) {
-		return addressRepository.findByAddrLine1(addrLine1);
-	}
-
-	public Address saveAddress(Address address) {
-		if(log.isTraceEnabled()) {
-			log.trace("Saving entity: {}", address);
-		}
-		if(!addressExistsValidator.validateSaveAddress(address)) {
-			address = addressRepository.save(address);
-			if(log.isDebugEnabled()) {
-				log.debug("Saved entity: {}", address);
+	public boolean validateSaveAddress(Address address) {
+		boolean exists = false;
+		Collection<Address> dbAddresses = addressRepository.
+				findByAddrLine1AndAddrLine2AndCityAndCountry(address.getAddrLine1(),
+						address.getAddrLine2(), address.getCity(), address.getCountry());
+		if(!dbAddresses.isEmpty()) {
+			for(Address dbAddress : dbAddresses) {
+				if((!StringUtils.isBlank(address.getState()) && address.getState().equals(dbAddress.getState())) ||
+						(!StringUtils.isBlank(address.getProvince()) && address.getProvince().equals(dbAddress.getProvince()))) {
+					log.debug("Entity to save: {}\nFound entity: {}", address, dbAddress);
+					exists = true;
+				}
 			}
-		} else {
-			log.warn("Following entity already exists: {}", address);
 		}
-		return address;
+		return exists;
 	}
 
 }
