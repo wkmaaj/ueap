@@ -33,30 +33,43 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class AddressExistsValidator {
+public class AddressValidationService {
 
 	private AddressRepository addressRepository;
 
 	@Autowired
-	public AddressExistsValidator(AddressRepository addressRepository) {
+	public AddressValidationService(AddressRepository addressRepository) {
 		this.addressRepository = addressRepository;
 	}
 
-	public boolean validateSaveAddress(Address address) {
-		boolean exists = false;
+	/**
+	 * This method queries the db via the 
+	 * {@link org.pdbcorp.eap.uni.data.repo.AddressRepository#findByAddrLine1AndCityAndCountry(String, String, String) findByAddrLine1AndCityAndCountry}
+	 * query method for any existing nodes that contain the same <i>addrLine1</i>, <i>city</i>, and <i>country</i> field properties.<br>
+	 * If the query returns a collection, then the <i>addrLine2</i>, <i>state</i> or <i>province</i>, and <i>postalCode</i> field properties
+	 * of the input parameter object and the returned nodes are compared to see if equivalent. If true, then that means the current ADDRESS
+	 * node exists in the db and the method returns the retrieved node. If false, then the node doesn't exist and the input parameter node
+	 * is returned.
+	 * 
+	 * @param address - the object to check the db for.
+	 * @return validatedAddress - either the initial object passed in as a parameter, or the ADDRESS node currently present in the db.
+	 */
+	public Address validateExists(Address address) {
 		Collection<Address> dbAddresses = addressRepository.
-				findByAddrLine1AndAddrLine2AndCityAndCountry(address.getAddrLine1(),
-						address.getAddrLine2(), address.getCity(), address.getCountry());
+				findByAddrLine1AndCityAndCountry(address.getAddrLine1(), address.getCity(), address.getCountry());
+		
 		if(!dbAddresses.isEmpty()) {
 			for(Address dbAddress : dbAddresses) {
-				if((!StringUtils.isBlank(address.getState()) && address.getState().equals(dbAddress.getState())) ||
-						(!StringUtils.isBlank(address.getProvince()) && address.getProvince().equals(dbAddress.getProvince()))) {
-					log.debug("Entity to save: {}\nFound entity: {}", address, dbAddress);
-					exists = true;
+				if((!StringUtils.isBlank(address.getAddrLine2()) && address.getAddrLine2().equals(dbAddress.getAddrLine2()))
+					&& (!StringUtils.isBlank(address.getState()) && address.getState().equals(dbAddress.getState())) ||
+						(!StringUtils.isBlank(address.getProvince()) && address.getProvince().equals(dbAddress.getProvince()))
+						&& (!StringUtils.isBlank(address.getPostalCode()) && address.getPostalCode().equals(dbAddress.getPostalCode()))) {
+					log.debug("Entity to save already exists: {}\n\nFound entity present in db: {}", address, dbAddress);
+					return dbAddress;
 				}
 			}
 		}
-		return exists;
+		return address;
 	}
 
 }
