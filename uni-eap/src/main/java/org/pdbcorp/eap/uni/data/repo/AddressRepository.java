@@ -33,10 +33,6 @@ public interface AddressRepository extends Neo4jRepository<Address, String> {
 
 	public Collection<Address> findByAddrLine1(@Param("addrLine1") String addrLine1);
 
-	public Collection<Address> findByAddrLine1AndAddrLine2AndCityAndCountry(
-			@Param("addrLine1") String addrLine1,
-			@Param("addrLine2") String addrLine2,
-			@Param("city") String city,
-			@Param("country") String country);
+	public Collection<Address> findByAddrLine1AndCityAndCountry(@Param("addrLine1") String addrLine1, @Param("city") String city, @Param("country") String country);
 
 }
