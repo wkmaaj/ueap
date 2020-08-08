@@ -19,6 +19,7 @@ package org.pdbcorp.eap.uni.data.repo;
 
 import org.pdbcorp.eap.uni.data.model.Vehicle;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -27,5 +28,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface VehicleRepository extends Neo4jRepository<Vehicle, String> {
+
+	public Vehicle findByMakeAndModel(@Param("make") String make, @Param("model") String model);
 
 }
