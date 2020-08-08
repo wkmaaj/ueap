@@ -19,9 +19,9 @@ package org.pdbcorp.eap.uni.service.validation.impl;
 
 import java.util.Collection;
 
-import org.apache.commons.lang3.StringUtils;
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.repo.AddressRepository;
+import org.pdbcorp.eap.uni.service.generation.impl.AddressUniqueStringGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,35 +36,40 @@ import lombok.extern.slf4j.Slf4j;
 public class AddressValidationService {
 
 	private AddressRepository addressRepository;
+	private AddressUniqueStringGenerationService addressUniqueStringGenerationService;
 
 	@Autowired
-	public AddressValidationService(AddressRepository addressRepository) {
+	public AddressValidationService(
+		AddressRepository addressRepository, AddressUniqueStringGenerationService addressUniqueStringGenerationService) {
+		
 		this.addressRepository = addressRepository;
+		this.addressUniqueStringGenerationService = addressUniqueStringGenerationService;
 	}
 
 	/**
 	 * This method queries the db via the 
 	 * {@link org.pdbcorp.eap.uni.data.repo.AddressRepository#findByAddrLine1AndCityAndCountry(String, String, String) findByAddrLine1AndCityAndCountry}
-	 * query method for any existing nodes that contain the same <i>addrLine1</i>, <i>city</i>, and <i>country</i> field properties.<br>
-	 * If the query returns a collection, then the <i>addrLine2</i>, <i>state</i> or <i>province</i>, and <i>postalCode</i> field properties
-	 * of the input parameter object and the returned nodes are compared to see if equivalent. If true, then that means the current ADDRESS
-	 * node exists in the db and the method returns the retrieved node. If false, then the node doesn't exist and the input parameter node
-	 * is returned.
+	 * query method for any existing nodes that contain the same <code>addrLine1</code>, <code>city</code>,
+	 * and <code>country</code> field properties.<br>
+	 * If the query returns a collection, then the {@link org.pdbcorp.eap.uni.data.model.Address#getPropsUid() propsUid} 
+	 * of the input parameter object and the returned nodes are compared to see if equivalent. If a returned node is found
+	 * to have an equivalent {@link org.pdbcorp.eap.uni.data.model.Address#getPropsUid() propsUid}, then that node is returned
+	 * to the method caller. Else, the input parameter object is passed back to the method caller with its
+	 * {@link org.pdbcorp.eap.uni.data.model.Address#getPropsUid() propsUid} property set.
 	 * 
 	 * @param address - the object to check the db for.
 	 * @return validatedAddress - either the initial object passed in as a parameter, or the ADDRESS node currently present in the db.
 	 */
 	public Address validateExists(Address address) {
+		address.setPropsUid(addressUniqueStringGenerationService.generateUniqueIdString(address));
 		Collection<Address> dbAddresses = addressRepository.
 				findByAddrLine1AndCityAndCountry(address.getAddrLine1(), address.getCity(), address.getCountry());
-		
 		if(!dbAddresses.isEmpty()) {
 			for(Address dbAddress : dbAddresses) {
-				if((!StringUtils.isBlank(address.getAddrLine2()) && address.getAddrLine2().equals(dbAddress.getAddrLine2()))
-					&& (!StringUtils.isBlank(address.getState()) && address.getState().equals(dbAddress.getState())) ||
-						(!StringUtils.isBlank(address.getProvince()) && address.getProvince().equals(dbAddress.getProvince()))
-						&& (!StringUtils.isBlank(address.getPostalCode()) && address.getPostalCode().equals(dbAddress.getPostalCode()))) {
-					log.debug("Entity to save already exists: {}\n\nFound entity present in db: {}", address, dbAddress);
+				if(address.getPropsUid().equals(dbAddress.getPropsUid())) {
+					if(log.isDebugEnabled()) {
+						log.debug("Identified existing node with matching propsUid: {}", dbAddress);
+					}
 					return dbAddress;
 				}
 			}

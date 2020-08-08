@@ -33,6 +33,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.repo.AddressRepository;
+import org.pdbcorp.eap.uni.service.generation.impl.AddressUniqueStringGenerationService;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
 /**
@@ -42,38 +43,24 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 @ExtendWith(MockitoExtension.class)
 class AddressValidationServiceTest {
 
+	private AddressUniqueStringGenerationService generator = new AddressUniqueStringGenerationService();
 	@Mock
 	private AddressRepository repo;
 
 	@InjectMocks
-	private AddressValidationService service = new AddressValidationService(repo);
+	private AddressValidationService service = new AddressValidationService(repo, generator);
 
 	@DisplayName("Successfully query ADDRESS nodes and identify STATE node already exists")
 	@Test
 	void validValidateExistsTrueState() throws Exception {
 		Address dbNode1 = TestDataFactoryUtil.generateAddressStateInstance();
 		Address dbNode2 = TestDataFactoryUtil.generateAddressStateInstance();
-		dbNode2.setAddrLine1("124 Fake St");
+		dbNode1.setPropsUid(generator.generateUniqueIdString(dbNode1));
 		Collection<Address> addresses = new ArrayList<>();
 		addresses.add(dbNode1);
 		when(repo.findByAddrLine1AndCityAndCountry(anyString(), anyString(), anyString())).thenReturn(addresses);
 		Address actual = service.validateExists(dbNode2);
 		assertEquals(dbNode1, actual);
-		assertNotEquals(dbNode2, actual);
-	}
-
-	@DisplayName("Successfully query ADDRESS nodes and identify PROVINCE node already exists")
-	@Test
-	void validValidateExistsTrueProvince() throws Exception {
-		Address dbNode1 = TestDataFactoryUtil.generateAddressProvinceInstance();
-		Address dbNode2 = TestDataFactoryUtil.generateAddressProvinceInstance();
-		dbNode2.setAddrLine1("124 Fake St");
-		Collection<Address> addresses = new ArrayList<>();
-		addresses.add(dbNode1);
-		when(repo.findByAddrLine1AndCityAndCountry(anyString(), anyString(), anyString())).thenReturn(addresses);
-		Address actual = service.validateExists(dbNode2);
-		assertEquals(dbNode1, actual);
-		assertNotEquals(dbNode2, actual);
 	}
 
 	@DisplayName("Successfully query ADDRESS nodes and identify node is unique")
@@ -81,8 +68,10 @@ class AddressValidationServiceTest {
 	void validValidateExistsFalse() throws Exception {
 		Address dbNode1 = TestDataFactoryUtil.generateAddressProvinceInstance();
 		Address dbNode2 = TestDataFactoryUtil.generateAddressProvinceInstance();
+		dbNode1.setPropsUid(generator.generateUniqueIdString(dbNode1));
 		dbNode2.setAddrLine1("124 Fake St");
 		Collection<Address> addresses = new ArrayList<>();
+		addresses.add(dbNode1);
 		when(repo.findByAddrLine1AndCityAndCountry(anyString(), anyString(), anyString())).thenReturn(addresses);
 		Address actual = service.validateExists(dbNode2);
 		assertEquals(dbNode2, actual);
