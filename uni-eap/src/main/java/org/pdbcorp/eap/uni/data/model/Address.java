@@ -73,6 +73,9 @@ public class Address extends GeneratedValueIdEntity {
 	@Property(name="POSTAL_CODE")
 	private String postalCode;
 
+	@Property(name="PROPS_UID")
+	private String propsUid;
+
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("addresses")
 	@Relationship(type="RESIDED_ADDRESS", direction=Relationship.INCOMING)
