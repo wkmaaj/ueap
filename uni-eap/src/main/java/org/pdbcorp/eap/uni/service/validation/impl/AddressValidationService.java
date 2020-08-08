@@ -58,19 +58,19 @@ public class AddressValidationService {
 	 * {@link org.pdbcorp.eap.uni.data.model.Address#getPropsUid() propsUid} property set.
 	 * 
 	 * @param address - the object to check the db for.
-	 * @return validatedAddress - either the initial object passed in as a parameter, or the ADDRESS node currently present in the db.
+	 * @return Address - either the initial object passed in as a parameter, or the ADDRESS node currently present in the db.
 	 */
 	public Address validateExists(Address address) {
 		address.setPropsUid(addressUniqueStringGenerationService.generateUniqueIdString(address));
-		Collection<Address> dbAddresses = addressRepository.
+		Collection<Address> dbNodes = addressRepository.
 				findByAddrLine1AndCityAndCountry(address.getAddrLine1(), address.getCity(), address.getCountry());
-		if(!dbAddresses.isEmpty()) {
-			for(Address dbAddress : dbAddresses) {
-				if(address.getPropsUid().equals(dbAddress.getPropsUid())) {
+		if(!dbNodes.isEmpty()) {
+			for(Address dbNode : dbNodes) {
+				if(address.getPropsUid().equals(dbNode.getPropsUid())) {
 					if(log.isDebugEnabled()) {
-						log.debug("Identified existing node with matching propsUid: {}", dbAddress);
+						log.debug("Identified existing node with matching propsUid: {}", dbNode);
 					}
-					return dbAddress;
+					return dbNode;
 				}
 			}
 		}
