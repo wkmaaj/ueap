@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 PDB Corp.
+\ * Copyright 2020 PDB Corp.
  *
  * Proprietary Software built off of open-source software?
  *
@@ -17,8 +17,10 @@
  */
 package org.pdbcorp.eap.uni.data.repo;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -84,8 +86,8 @@ class AddressRepositoryIT {
 	@Test
 	void validFindByAddrLine1Test() throws Exception {
 		Address expected = repo.save(TestDataFactoryUtil.generateAddressInstance());
-		Address actual = repo.findByAddrLine1("123 Fake St");
-		assertEquals(expected, actual);
+		Collection<Address> result = repo.findByAddrLine1("123 Fake St");
+		assertTrue(result.contains(expected));
 	}
 
 }
