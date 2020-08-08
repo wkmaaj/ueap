@@ -47,6 +47,11 @@ public class VehicleRestControllerImpl implements VehicleRestController {
 	}
 
 	@Override
+	public Response findByMakeAndModel(String make, String model) {
+		return Response.ok(vehicleDetailsService.findByMakeAndModel(make, model)).build();
+	}
+
+	@Override
 	public Response saveVehicle(Vehicle vehicle) {
 		return Response.ok(vehicleDetailsService.saveVehicle(vehicle)).build();
 	}
