@@ -17,21 +17,44 @@
  */
 package org.pdbcorp.eap.uni.service.impl;
 
+import java.util.Collection;
+
 import org.pdbcorp.eap.uni.data.model.Subject;
 import org.pdbcorp.eap.uni.data.repo.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author jaradat-pdb
  */
+@Slf4j
 @Service
 public class SubjectDetailsService extends BaseEntityDetailsService<Subject> {
+
+	private SubjectRepository subjectRepository;
 
 	@Autowired
 	public SubjectDetailsService(SubjectRepository subjectRepository) {
 		super(subjectRepository);
+		this.subjectRepository = subjectRepository;
+	}
+
+	public Collection<Subject> findByName(String name) {
+		return subjectRepository.findByName(name);
+	}
+
+	public Subject saveSubject(Subject subject) {
+		if(log.isTraceEnabled()) {
+			log.trace("Saving entity: {}", subject);
+		}
+		subject = subjectRepository.save(subject);
+		if(log.isDebugEnabled()) {
+			log.debug("Saved entity: {}", subject);
+		}
+		return subject;
 	}
 
 }

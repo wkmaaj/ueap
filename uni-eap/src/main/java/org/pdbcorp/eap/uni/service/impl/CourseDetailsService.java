@@ -17,21 +17,44 @@
  */
 package org.pdbcorp.eap.uni.service.impl;
 
+import java.util.Collection;
+
 import org.pdbcorp.eap.uni.data.model.Course;
 import org.pdbcorp.eap.uni.data.repo.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author jaradat-pdb
  */
+@Slf4j
 @Service
 public class CourseDetailsService extends BaseEntityDetailsService<Course> {
+
+	private CourseRepository courseRepository;
 
 	@Autowired
 	public CourseDetailsService(CourseRepository courseRepository) {
 		super(courseRepository);
+		this.courseRepository = courseRepository;
+	}
+
+	public Collection<Course> findByName(String name) {
+		return courseRepository.findByName(name);
+	}
+
+	public Course saveCourse(Course course) {
+		if(log.isTraceEnabled()) {
+			log.trace("Saving entity: {}", course);
+		}
+		course = courseRepository.save(course);
+		if(log.isDebugEnabled()) {
+			log.debug("Saved entity: {}", course);
+		}
+		return course;
 	}
 
 }

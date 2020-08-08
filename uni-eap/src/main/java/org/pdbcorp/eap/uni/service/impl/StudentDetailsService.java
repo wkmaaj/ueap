@@ -17,21 +17,44 @@
  */
 package org.pdbcorp.eap.uni.service.impl;
 
+import java.util.Collection;
+
 import org.pdbcorp.eap.uni.data.model.Student;
 import org.pdbcorp.eap.uni.data.repo.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author jaradat-pdb
  */
+@Slf4j
 @Service
 public class StudentDetailsService extends BaseEntityDetailsService<Student> {
+
+	private StudentRepository studentRepository;
 
 	@Autowired
 	public StudentDetailsService(StudentRepository studentRepository) {
 		super(studentRepository);
+		this.studentRepository = studentRepository;
+	}
+
+	public Collection<Student> findByName(String name) {
+		return studentRepository.findByName(name);
+	}
+
+	public Student saveStudent(Student student) {
+		if(log.isTraceEnabled()) {
+			log.trace("Saving entity: {}", student);
+		}
+		student = studentRepository.save(student);
+		if(log.isDebugEnabled()) {
+			log.debug("Saved entity: {}", student);
+		}
+		return student;
 	}
 
 }

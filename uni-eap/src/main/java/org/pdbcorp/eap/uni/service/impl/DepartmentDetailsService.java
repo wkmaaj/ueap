@@ -17,21 +17,44 @@
  */
 package org.pdbcorp.eap.uni.service.impl;
 
+import java.util.Collection;
+
 import org.pdbcorp.eap.uni.data.model.Department;
 import org.pdbcorp.eap.uni.data.repo.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author jaradat-pdb
  */
+@Slf4j
 @Service
 public class DepartmentDetailsService extends BaseEntityDetailsService<Department> {
+
+	private DepartmentRepository departmentRepository;
 
 	@Autowired
 	public DepartmentDetailsService(DepartmentRepository departmentRepository) {
 		super(departmentRepository);
+		this.departmentRepository = departmentRepository;
+	}
+
+	public Collection<Department> findByName(String name) {
+		return departmentRepository.findByName(name);
+	}
+
+	public Department saveDepartment(Department department) {
+		if(log.isTraceEnabled()) {
+			log.trace("Saving entity: {}", department);
+		}
+		department = departmentRepository.save(department);
+		if(log.isDebugEnabled()) {
+			log.debug("Saved entity: {}", department);
+		}
+		return department;
 	}
 
 }
