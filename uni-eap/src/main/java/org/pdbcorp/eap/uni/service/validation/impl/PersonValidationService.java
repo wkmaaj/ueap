@@ -32,12 +32,12 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class PersonExistsValidator {
+public class PersonValidationService {
 
 	private PersonRepository personRepository;
 
 	@Autowired
-	public PersonExistsValidator(PersonRepository personRepository) {
+	public PersonValidationService(PersonRepository personRepository) {
 		this.personRepository = personRepository;
 	}
 
