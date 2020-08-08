@@ -26,6 +26,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,9 +53,13 @@ public class Teacher extends OccupationEntity {
 	@Property(name="NAME")
 	private String name;
 
+	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("teacher")
 	@Relationship(type="TEACHES_CLASS")
 	private Set<Course> courses = new HashSet<>();
 
+	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("teachers")
 	@Relationship(type="TAUGHT_BY", direction=Relationship.INCOMING)
 	private Set<Subject> subjects = new HashSet<>();
 

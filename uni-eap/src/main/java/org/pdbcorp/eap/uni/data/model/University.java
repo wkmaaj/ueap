@@ -58,6 +58,7 @@ public class University extends GeneratedValueIdEntity {
 	private Address address;
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("university")
 	@Relationship(type="UNI_DEPARTMENT", direction=Relationship.INCOMING)
 	private Set<Department> departments = new HashSet<>();
 

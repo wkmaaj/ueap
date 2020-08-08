@@ -26,6 +26,8 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -52,9 +54,12 @@ public class Department extends GeneratedValueIdEntity {
 	private String name;
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("department")
 	@Relationship(type="CURRICULUM")
 	private Set<Subject> subjects = new HashSet<>();
 
+	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("departments")
 	@NonNull
 	@Relationship(type="UNI_DEPARTMENT")
 	private University university;

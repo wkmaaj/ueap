@@ -25,6 +25,7 @@ import org.neo4j.ogm.annotation.StartNode;
 import org.neo4j.ogm.annotation.typeconversion.DateLong;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -48,10 +49,12 @@ import lombok.Setter;
 public class Enrollment extends GeneratedValueIdEntity {
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("enrollments")
 	@StartNode
 	private Student student;
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("enrollments")
 	@EndNode
 	private Course course;
 

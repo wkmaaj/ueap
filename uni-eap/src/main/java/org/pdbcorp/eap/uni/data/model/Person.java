@@ -75,6 +75,7 @@ public class Person extends GeneratedValueIdEntity {
 	private GenderEnum gender;
 
 	@EqualsAndHashCode.Exclude
+	@JsonIgnoreProperties("person")
 	@Relationship(type="CURRENT_OCCUPATION", direction=Relationship.INCOMING)
 	private OccupationEntity occupation;
 
