@@ -23,6 +23,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -41,6 +42,10 @@ public interface VehicleRestController {
 	@GET
 	@Path("/find")
 	Collection<Vehicle> findAll();
+
+	@GET
+	@Path("/find/{make}/{model}")
+	Response findByMakeAndModel(@PathParam("make") String make, @PathParam("model") String model);
 
 	@POST
 	@Path("/save")
