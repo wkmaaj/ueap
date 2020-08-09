@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.VehicleRestController;
 import org.pdbcorp.eap.uni.data.model.Vehicle;
-import org.pdbcorp.eap.uni.service.impl.VehicleDetailsService;
+import org.pdbcorp.eap.uni.service.details.impl.VehicleDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -53,7 +53,7 @@ public class VehicleRestControllerImpl implements VehicleRestController {
 
 	@Override
 	public Response saveVehicle(Vehicle vehicle) {
-		return Response.ok(vehicleDetailsService.saveVehicle(vehicle)).build();
+		return Response.ok(vehicleDetailsService.validateAndSave(vehicle)).build();
 	}
 
 }

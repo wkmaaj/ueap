@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.SubjectRestController;
 import org.pdbcorp.eap.uni.data.model.Subject;
-import org.pdbcorp.eap.uni.service.impl.SubjectDetailsService;
+import org.pdbcorp.eap.uni.service.details.impl.SubjectDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -53,7 +53,7 @@ public class SubjectRestControllerImpl implements SubjectRestController {
 
 	@Override
 	public Response saveSubject(Subject subject) {
-		return Response.ok(subjectDetailsService.saveSubject(subject)).build();
+		return Response.ok(subjectDetailsService.validateAndSave(subject)).build();
 	}
 
 }

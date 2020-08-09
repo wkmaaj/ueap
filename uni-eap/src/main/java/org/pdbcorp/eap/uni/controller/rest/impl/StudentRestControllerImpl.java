@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.StudentRestController;
 import org.pdbcorp.eap.uni.data.model.Student;
-import org.pdbcorp.eap.uni.service.impl.StudentDetailsService;
+import org.pdbcorp.eap.uni.service.details.impl.StudentDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -53,7 +53,7 @@ public class StudentRestControllerImpl implements StudentRestController {
 
 	@Override
 	public Response saveStudent(Student student) {
-		return Response.ok(studentDetailsService.saveStudent(student)).build();
+		return Response.ok(studentDetailsService.validateAndSave(student)).build();
 	}
 
 }

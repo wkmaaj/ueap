@@ -25,7 +25,7 @@ import org.pdbcorp.eap.uni.controller.rest.AddressRestController;
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.data.model.University;
-import org.pdbcorp.eap.uni.service.impl.AddressDetailsService;
+import org.pdbcorp.eap.uni.service.details.impl.AddressDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -55,21 +55,21 @@ public class AddressRestControllerImpl implements AddressRestController {
 
 	@Override
 	public Response saveAddress(Address address) {
-		return Response.ok(addressDetailsService.saveAddress(address)).build();
+		return Response.ok(addressDetailsService.validateAndSave(address)).build();
 	}
 
 	@Override
 	public Response updateWithPerson(String id, Person person) {
 		Address address = addressDetailsService.findByEntityId(id);
 		address.getPersons().add(person);
-		return Response.ok(addressDetailsService.saveAddress(address)).build();
+		return Response.ok(addressDetailsService.validateAndSave(address)).build();
 	}
 
 	@Override
 	public Response updateWithUniversity(String id, University university) {
 		Address address = addressDetailsService.findByEntityId(id);
 		address.setUniversity(university);
-		return Response.ok(addressDetailsService.saveAddress(address)).build();
+		return Response.ok(addressDetailsService.validateAndSave(address)).build();
 	}
 
 }

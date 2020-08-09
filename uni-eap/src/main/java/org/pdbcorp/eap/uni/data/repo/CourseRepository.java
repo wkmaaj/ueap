@@ -20,7 +20,6 @@ package org.pdbcorp.eap.uni.data.repo;
 import java.util.Collection;
 
 import org.pdbcorp.eap.uni.data.model.Course;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +28,7 @@ import org.springframework.stereotype.Repository;
  * @author jaradat-pdb
  */
 @Repository
-public interface CourseRepository extends Neo4jRepository<Course, String> {
+public interface CourseRepository extends BaseEntityRepository<Course> {
 
 	public Collection<Course> findByName(@Param("name") String name);
 

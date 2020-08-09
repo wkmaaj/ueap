@@ -17,12 +17,11 @@
  */
 package org.pdbcorp.eap.uni.service.validation.impl;
 
-import java.util.Collection;
-
 import org.pdbcorp.eap.uni.data.model.Address;
-import org.pdbcorp.eap.uni.data.repo.AddressRepository;
-import org.pdbcorp.eap.uni.service.generation.impl.AddressUniqueStringGenerationService;
+import org.pdbcorp.eap.uni.data.repo.BaseEntityRepository;
+import org.pdbcorp.eap.uni.service.generation.EntityNodeUidGenerationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,48 +32,14 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-public class AddressValidationService {
-
-	private AddressRepository addressRepository;
-	private AddressUniqueStringGenerationService addressUniqueStringGenerationService;
+class AddressValidationService extends BaseEntityValidationService<Address> {
 
 	@Autowired
-	public AddressValidationService(
-		AddressRepository addressRepository, AddressUniqueStringGenerationService addressUniqueStringGenerationService) {
+	AddressValidationService(
+			@Qualifier("addressRepository") BaseEntityRepository<Address> addressRepository,
+			@Qualifier("addressNodeUidGenerationService") EntityNodeUidGenerationService<Address> addressNodeUidGenerationService) {
 		
-		this.addressRepository = addressRepository;
-		this.addressUniqueStringGenerationService = addressUniqueStringGenerationService;
-	}
-
-	/**
-	 * This method queries the db via the 
-	 * {@link org.pdbcorp.eap.uni.data.repo.AddressRepository#findByAddrLine1AndCityAndCountry(String, String, String) findByAddrLine1AndCityAndCountry}
-	 * query method for any existing nodes that contain the same <code>addrLine1</code>, <code>city</code>,
-	 * and <code>country</code> field properties.<br>
-	 * If the query returns a collection, then the {@link org.pdbcorp.eap.uni.data.model.Address#getPropsUid() propsUid} 
-	 * of the input parameter object and the returned nodes are compared to see if equivalent. If a returned node is found
-	 * to have an equivalent {@link org.pdbcorp.eap.uni.data.model.Address#getPropsUid() propsUid}, then that node is returned
-	 * to the method caller. Else, the input parameter object is passed back to the method caller with its
-	 * {@link org.pdbcorp.eap.uni.data.model.Address#getPropsUid() propsUid} property set.
-	 * 
-	 * @param address - the object to check the db for.
-	 * @return Address - either the initial object passed in as a parameter, or the ADDRESS node currently present in the db.
-	 */
-	public Address validateExists(Address address) {
-		address.setPropsUid(addressUniqueStringGenerationService.generateUniqueIdString(address));
-		Collection<Address> dbNodes = addressRepository.
-				findByAddrLine1AndCityAndCountry(address.getAddrLine1(), address.getCity(), address.getCountry());
-		if(!dbNodes.isEmpty()) {
-			for(Address dbNode : dbNodes) {
-				if(address.getPropsUid().equals(dbNode.getPropsUid())) {
-					if(log.isDebugEnabled()) {
-						log.debug("Identified existing node with matching propsUid: {}", dbNode);
-					}
-					return dbNode;
-				}
-			}
-		}
-		return address;
+		super(addressRepository, addressNodeUidGenerationService, log);
 	}
 
 }
