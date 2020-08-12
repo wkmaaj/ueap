@@ -1,6 +1,10 @@
 # ueap
 University Enterprise Application Platform
 
+### Running Commands
+java -jar uni-eap-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+mvn spring-boot:run -Dspring-boot.run.profiles=dev -X
+
 ### Common cURL Commands
 `curl -i -X POST -H 'Content-Type:application/json' -w '\n' -v -d '{"addrLine1":"123 Fake Ave", "city":"Springfield", "country":"USA"}' http://localhost:9090/rest/api/address/save`
 
