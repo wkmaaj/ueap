@@ -205,6 +205,13 @@ public final class TestDataFactoryUtil {
 		return student;
 	}
 
+	public static final Subject generateSubjectInstanceWithDepartmentCoursesTeachers() {
+		Subject subject = generateSubjectInstanceWithDepartment();
+		subject.getCourses().add(TestDataFactoryUtil.generateCourseInstance());
+		subject.getTeachers().add(TestDataFactoryUtil.generateTeacherInstance());
+		return subject;
+	}
+
 	public static final Subject generateSubjectInstanceWithDepartment() {
 		Subject subject = generateSubjectInstance();
 		subject.setDepartment(generateDepartmentInstance());

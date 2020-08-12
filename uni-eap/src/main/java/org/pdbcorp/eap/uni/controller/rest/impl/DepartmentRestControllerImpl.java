@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.DepartmentRestController;
 import org.pdbcorp.eap.uni.data.model.Department;
-import org.pdbcorp.eap.uni.service.details.impl.DepartmentDetailsService;
+import org.pdbcorp.eap.uni.service.retrieve.impl.DepartmentDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -34,10 +34,10 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class DepartmentRestControllerImpl implements DepartmentRestController {
 
-	private DepartmentDetailsService departmentDetailsService;
+	private DepartmentDetailsRetrieverService departmentDetailsService;
 
 	@Autowired
-	public DepartmentRestControllerImpl(DepartmentDetailsService departmentDetailsService) {
+	public DepartmentRestControllerImpl(DepartmentDetailsRetrieverService departmentDetailsService) {
 		this.departmentDetailsService = departmentDetailsService;
 	}
 
@@ -53,7 +53,7 @@ public class DepartmentRestControllerImpl implements DepartmentRestController {
 
 	@Override
 	public Response saveDepartment(Department department) {
-		return Response.ok(departmentDetailsService.validateAndSave(department)).build();
+		return Response.ok(departmentDetailsService.saveEntity(department)).build();
 	}
 
 }

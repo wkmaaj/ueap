@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.PersonRestController;
 import org.pdbcorp.eap.uni.data.model.Person;
-import org.pdbcorp.eap.uni.service.details.impl.PersonDetailsService;
+import org.pdbcorp.eap.uni.service.retrieve.impl.PersonDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -34,10 +34,10 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class PersonRestControllerImpl implements PersonRestController {
 
-	private PersonDetailsService personDetailsService;
+	private PersonDetailsRetrieverService personDetailsService;
 
 	@Autowired
-	public PersonRestControllerImpl(PersonDetailsService personDetailsService) {
+	public PersonRestControllerImpl(PersonDetailsRetrieverService personDetailsService) {
 		this.personDetailsService = personDetailsService;
 	}
 
@@ -53,7 +53,7 @@ public class PersonRestControllerImpl implements PersonRestController {
 
 	@Override
 	public Response savePerson(Person person) {
-		return Response.ok(personDetailsService.validateAndSave(person)).build();
+		return Response.ok(personDetailsService.saveEntity(person)).build();
 	}
 
 }
