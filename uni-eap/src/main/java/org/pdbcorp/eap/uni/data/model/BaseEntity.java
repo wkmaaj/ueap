@@ -24,5 +24,7 @@ package org.pdbcorp.eap.uni.data.model;
 public interface BaseEntity {
 
 	String getId();
+	String getNodeUid();
+	void setNodeUid(String nodeUid);
 
 }

@@ -25,8 +25,10 @@ import org.pdbcorp.eap.uni.controller.rest.AddressRestController;
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.data.model.University;
-import org.pdbcorp.eap.uni.service.impl.AddressDetailsService;
+import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
+import org.pdbcorp.eap.uni.service.retrieve.impl.AddressDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -36,11 +38,16 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class AddressRestControllerImpl implements AddressRestController {
 
-	private AddressDetailsService addressDetailsService;
+	private AddressDetailsRetrieverService addressDetailsService;
+	private AddEntityProcessFlow<Address> addAddressProcessFlow;
 
 	@Autowired
-	public AddressRestControllerImpl(AddressDetailsService addressDetailsService) {
+	public AddressRestControllerImpl(
+			AddressDetailsRetrieverService addressDetailsService,
+			@Qualifier("addAddressProcessFlow") AddEntityProcessFlow<Address> addAddressProcessFlow) {
+		
 		this.addressDetailsService = addressDetailsService;
+		this.addAddressProcessFlow = addAddressProcessFlow;
 	}
 
 	@Override
@@ -55,21 +62,21 @@ public class AddressRestControllerImpl implements AddressRestController {
 
 	@Override
 	public Response saveAddress(Address address) {
-		return Response.ok(addressDetailsService.saveAddress(address)).build();
+		return Response.ok(addAddressProcessFlow.execute(address)).build();
 	}
 
 	@Override
 	public Response updateWithPerson(String id, Person person) {
 		Address address = addressDetailsService.findByEntityId(id);
 		address.getPersons().add(person);
-		return Response.ok(addressDetailsService.saveAddress(address)).build();
+		return Response.ok(addressDetailsService.saveEntity(address)).build();
 	}
 
 	@Override
 	public Response updateWithUniversity(String id, University university) {
 		Address address = addressDetailsService.findByEntityId(id);
 		address.setUniversity(university);
-		return Response.ok(addressDetailsService.saveAddress(address)).build();
+		return Response.ok(addressDetailsService.saveEntity(address)).build();
 	}
 
 }

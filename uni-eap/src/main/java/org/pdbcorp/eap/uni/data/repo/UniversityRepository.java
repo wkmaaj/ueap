@@ -18,7 +18,6 @@
 package org.pdbcorp.eap.uni.data.repo;
 
 import org.pdbcorp.eap.uni.data.model.University;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * @author jaradat-pdb
  */
 @Repository
-public interface UniversityRepository extends Neo4jRepository<University, String> {
+public interface UniversityRepository extends BaseEntityRepository<University> {
 
 	public University findByName(@Param("name") String name);
 

@@ -18,7 +18,6 @@
 package org.pdbcorp.eap.uni.data.repo;
 
 import org.pdbcorp.eap.uni.data.model.Enrollment;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -26,6 +25,6 @@ import org.springframework.stereotype.Repository;
  * @author jaradat-pdb
  */
 @Repository
-public interface EnrollmentRepository extends Neo4jRepository<Enrollment, String> {
+public interface EnrollmentRepository extends BaseEntityRepository<Enrollment> {
 
 }

@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.TeacherRestController;
 import org.pdbcorp.eap.uni.data.model.Teacher;
-import org.pdbcorp.eap.uni.service.impl.TeacherDetailsService;
+import org.pdbcorp.eap.uni.service.retrieve.impl.TeacherDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -34,10 +34,10 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class TeacherRestControllerImpl implements TeacherRestController {
 
-	private TeacherDetailsService teacherDetailsService;
+	private TeacherDetailsRetrieverService teacherDetailsService;
 
 	@Autowired
-	public TeacherRestControllerImpl(TeacherDetailsService teacherDetailsService) {
+	public TeacherRestControllerImpl(TeacherDetailsRetrieverService teacherDetailsService) {
 		this.teacherDetailsService = teacherDetailsService;
 	}
 
@@ -53,7 +53,7 @@ public class TeacherRestControllerImpl implements TeacherRestController {
 
 	@Override
 	public Response saveTeacher(Teacher teacher) {
-		return Response.ok(teacherDetailsService.saveTeacher(teacher)).build();
+		return Response.ok(teacherDetailsService.saveEntity(teacher)).build();
 	}
 
 }
