@@ -23,8 +23,10 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.PersonRestController;
 import org.pdbcorp.eap.uni.data.model.Person;
+import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.retrieve.impl.PersonDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -34,26 +36,31 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class PersonRestControllerImpl implements PersonRestController {
 
-	private PersonDetailsRetrieverService personDetailsService;
+	private PersonDetailsRetrieverService personDetailsRetrieverService;
+	private AddEntityProcessFlow<Person> addPersonProcessFlow;
 
 	@Autowired
-	public PersonRestControllerImpl(PersonDetailsRetrieverService personDetailsService) {
-		this.personDetailsService = personDetailsService;
+	public PersonRestControllerImpl(
+			PersonDetailsRetrieverService personDetailsRetrieverService,
+			@Qualifier("addPersonProcessFlow") AddEntityProcessFlow<Person> addPersonProcessFlow) {
+		
+		this.personDetailsRetrieverService = personDetailsRetrieverService;
+		this.addPersonProcessFlow = addPersonProcessFlow;
 	}
 
 	@Override
 	public Collection<Person> findAll() {
-		return personDetailsService.findAll();
+		return personDetailsRetrieverService.findAll();
 	}
 
 	@Override
 	public Response findByFname(String fname) {
-		return Response.ok(personDetailsService.findByFname(fname)).build();
+		return Response.ok(personDetailsRetrieverService.findByFname(fname)).build();
 	}
 
 	@Override
 	public Response savePerson(Person person) {
-		return Response.ok(personDetailsService.saveEntity(person)).build();
+		return Response.ok(addPersonProcessFlow.execute(person)).build();
 	}
 
 }

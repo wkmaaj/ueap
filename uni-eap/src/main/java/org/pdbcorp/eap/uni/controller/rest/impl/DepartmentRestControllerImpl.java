@@ -23,8 +23,10 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.DepartmentRestController;
 import org.pdbcorp.eap.uni.data.model.Department;
+import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.retrieve.impl.DepartmentDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -34,26 +36,31 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class DepartmentRestControllerImpl implements DepartmentRestController {
 
-	private DepartmentDetailsRetrieverService departmentDetailsService;
+	private DepartmentDetailsRetrieverService departmentDetailsRetrieverService;
+	private AddEntityProcessFlow<Department> addDepartmentProcessFlow;
 
 	@Autowired
-	public DepartmentRestControllerImpl(DepartmentDetailsRetrieverService departmentDetailsService) {
-		this.departmentDetailsService = departmentDetailsService;
+	public DepartmentRestControllerImpl(
+			DepartmentDetailsRetrieverService departmentDetailsRetrieverService,
+			@Qualifier("addDepartmentProcessFlow") AddEntityProcessFlow<Department> addDepartmentProcessFlow) {
+		
+		this.departmentDetailsRetrieverService = departmentDetailsRetrieverService;
+		this.addDepartmentProcessFlow = addDepartmentProcessFlow;
 	}
 
 	@Override
 	public Collection<Department> findAll() {
-		return departmentDetailsService.findAll();
+		return departmentDetailsRetrieverService.findAll();
 	}
 
 	@Override
 	public Response findByName(String name) {
-		return Response.ok(departmentDetailsService.findByName(name)).build();
+		return Response.ok(departmentDetailsRetrieverService.findByName(name)).build();
 	}
 
 	@Override
 	public Response saveDepartment(Department department) {
-		return Response.ok(departmentDetailsService.saveEntity(department)).build();
+		return Response.ok(addDepartmentProcessFlow.execute(department)).build();
 	}
 
 }

@@ -23,8 +23,10 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.SubjectRestController;
 import org.pdbcorp.eap.uni.data.model.Subject;
+import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.retrieve.impl.SubjectDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -34,26 +36,31 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class SubjectRestControllerImpl implements SubjectRestController {
 
-	private SubjectDetailsRetrieverService subjectDetailsService;
+	private SubjectDetailsRetrieverService subjectDetailsRetrieverService;
+	private AddEntityProcessFlow<Subject> addSubjectProcessFlow;
 
 	@Autowired
-	public SubjectRestControllerImpl(SubjectDetailsRetrieverService subjectDetailsService) {
-		this.subjectDetailsService = subjectDetailsService;
+	public SubjectRestControllerImpl(
+			SubjectDetailsRetrieverService subjectDetailsRetrieverService,
+			@Qualifier("addSubjectProcessFlow") AddEntityProcessFlow<Subject> addSubjectProcessFlow) {
+		
+		this.subjectDetailsRetrieverService = subjectDetailsRetrieverService;
+		this.addSubjectProcessFlow = addSubjectProcessFlow;
 	}
 
 	@Override
 	public Collection<Subject> findAll() {
-		return subjectDetailsService.findAll();
+		return subjectDetailsRetrieverService.findAll();
 	}
 
 	@Override
 	public Response findByName(String name) {
-		return Response.ok(subjectDetailsService.findByName(name)).build();
+		return Response.ok(subjectDetailsRetrieverService.findByName(name)).build();
 	}
 
 	@Override
 	public Response saveSubject(Subject subject) {
-		return Response.ok(subjectDetailsService.saveEntity(subject)).build();
+		return Response.ok(addSubjectProcessFlow.execute(subject)).build();
 	}
 
 }

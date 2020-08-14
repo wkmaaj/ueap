@@ -23,8 +23,10 @@ import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.TeacherRestController;
 import org.pdbcorp.eap.uni.data.model.Teacher;
+import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.retrieve.impl.TeacherDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -34,26 +36,31 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class TeacherRestControllerImpl implements TeacherRestController {
 
-	private TeacherDetailsRetrieverService teacherDetailsService;
+	private TeacherDetailsRetrieverService teacherDetailsRetrieverService;
+	private AddEntityProcessFlow<Teacher> addTeacherProcessFlow;
 
 	@Autowired
-	public TeacherRestControllerImpl(TeacherDetailsRetrieverService teacherDetailsService) {
-		this.teacherDetailsService = teacherDetailsService;
+	public TeacherRestControllerImpl(
+			TeacherDetailsRetrieverService teacherDetailsRetrieverService,
+			@Qualifier("addTeacherProcessFlow") AddEntityProcessFlow<Teacher> addTeacherProcessFlow) {
+		
+		this.teacherDetailsRetrieverService = teacherDetailsRetrieverService;
+		this.addTeacherProcessFlow = addTeacherProcessFlow;
 	}
 
 	@Override
 	public Collection<Teacher> findAll() {
-		return teacherDetailsService.findAll();
+		return teacherDetailsRetrieverService.findAll();
 	}
 
 	@Override
 	public Response findByName(String name) {
-		return Response.ok(teacherDetailsService.findByName(name)).build();
+		return Response.ok(teacherDetailsRetrieverService.findByName(name)).build();
 	}
 
 	@Override
 	public Response saveTeacher(Teacher teacher) {
-		return Response.ok(teacherDetailsService.saveEntity(teacher)).build();
+		return Response.ok(addTeacherProcessFlow.execute(teacher)).build();
 	}
 
 }
