@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.pdbcorp.eap.uni.data.model.Address;
+import org.pdbcorp.eap.uni.data.model.Vehicle;
 import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.retrieve.RetrieveEntityDetailsService;
@@ -39,25 +39,25 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
  * @author jaradat-pdb
  */
 @ExtendWith(MockitoExtension.class)
-class AddAddressProcessFlowTest {
+class AddVehicleProcessFlowTest {
 
 	@Mock
-	private RetrieveEntityDetailsService<Address> retrieveEntityDetailsService;
+	private RetrieveEntityDetailsService<Vehicle> retrieveEntityDetailsService;
 	@Mock
-	private GenerateNodeUidService<Address> generateNodeUidService;
+	private GenerateNodeUidService<Vehicle> generateNodeUidService;
 	@Mock
-	private ValidateEntityRelationshipsService<Address> validateEntityRelationshipsService;
+	private ValidateEntityRelationshipsService<Vehicle> validateEntityRelationshipsService;
 	@Mock
-	private ValidateNodeUidService<Address> validateNodeUidService;
+	private ValidateNodeUidService<Vehicle> validateNodeUidService;
 
 	@InjectMocks
-	private AddEntityProcessFlow<Address> addEntityProcessFlow = new AddAddressProcessFlow(
+	private AddEntityProcessFlow<Vehicle> addEntityProcessFlow = new AddVehicleProcessFlow(
 			retrieveEntityDetailsService, generateNodeUidService, validateEntityRelationshipsService, validateNodeUidService);
 
 	@DisplayName("")
 	@Test
 	void validExecuteTest() throws Exception {
-		Address entity = TestDataFactoryUtil.generateAddressProvinceInstance();
+		Vehicle entity = TestDataFactoryUtil.generateVehicleInstance();
 		when(generateNodeUidService.generateNodeUid(entity)).thenReturn("ABCD1234");
 		when(validateNodeUidService.validateNodeUid(entity)).thenReturn(entity);
 		when(validateEntityRelationshipsService.validateEntityRelationships(entity)).thenReturn(entity);

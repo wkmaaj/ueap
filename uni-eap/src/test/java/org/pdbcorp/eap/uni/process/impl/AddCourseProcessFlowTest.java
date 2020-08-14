@@ -26,7 +26,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.pdbcorp.eap.uni.data.model.Address;
+import org.pdbcorp.eap.uni.data.model.Course;
 import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.retrieve.RetrieveEntityDetailsService;
@@ -39,25 +39,25 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
  * @author jaradat-pdb
  */
 @ExtendWith(MockitoExtension.class)
-class AddAddressProcessFlowTest {
+class AddCourseProcessFlowTest {
 
 	@Mock
-	private RetrieveEntityDetailsService<Address> retrieveEntityDetailsService;
+	private RetrieveEntityDetailsService<Course> retrieveEntityDetailsService;
 	@Mock
-	private GenerateNodeUidService<Address> generateNodeUidService;
+	private GenerateNodeUidService<Course> generateNodeUidService;
 	@Mock
-	private ValidateEntityRelationshipsService<Address> validateEntityRelationshipsService;
+	private ValidateEntityRelationshipsService<Course> validateEntityRelationshipsService;
 	@Mock
-	private ValidateNodeUidService<Address> validateNodeUidService;
+	private ValidateNodeUidService<Course> validateNodeUidService;
 
 	@InjectMocks
-	private AddEntityProcessFlow<Address> addEntityProcessFlow = new AddAddressProcessFlow(
+	private AddEntityProcessFlow<Course> addEntityProcessFlow = new AddCourseProcessFlow(
 			retrieveEntityDetailsService, generateNodeUidService, validateEntityRelationshipsService, validateNodeUidService);
 
 	@DisplayName("")
 	@Test
 	void validExecuteTest() throws Exception {
-		Address entity = TestDataFactoryUtil.generateAddressProvinceInstance();
+		Course entity = TestDataFactoryUtil.generateCourseInstance();
 		when(generateNodeUidService.generateNodeUid(entity)).thenReturn("ABCD1234");
 		when(validateNodeUidService.validateNodeUid(entity)).thenReturn(entity);
 		when(validateEntityRelationshipsService.validateEntityRelationships(entity)).thenReturn(entity);
