@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-class StudentNodeUidGenerationService implements GenerateNodeUidService<Student>{
+class StudentNodeUidGeneratorService implements GenerateNodeUidService<Student> {
 
 	/**
 	 * This method constructs a <i>unique identifying</i> {@link java.lang.String String} based on the properties

@@ -34,9 +34,9 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
  * @author jaradat-pdb
  */
 @ExtendWith(MockitoExtension.class)
-class PersonNodeUidGenerationServiceTest {
+class PersonNodeUidGeneratorServiceTest {
 
-	private GenerateNodeUidService<Person> service = new PersonNodeUidGenerationService();
+	private GenerateNodeUidService<Person> service = new PersonNodeUidGeneratorService();
 
 	@DisplayName("Successfully generate a NODE_UID string for a PERSON entity")
 	@Test
