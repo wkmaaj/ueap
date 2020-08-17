@@ -30,6 +30,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.data.model.Teacher;
+import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.validate.ValidateEntityRelationshipsService;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
@@ -42,10 +43,13 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 class TeacherRelationshipsValidatorServiceTest {
 
 	@Mock
+	private GenerateNodeUidService<Person> personNodeUidGeneratorService;
+	@Mock
 	private ValidateNodeUidService<Person> personNodeUidValidatorService;
 
 	@InjectMocks
-	private ValidateEntityRelationshipsService<Teacher> persistence = new TeacherRelationshipsValidatorService(personNodeUidValidatorService);
+	private ValidateEntityRelationshipsService<Teacher> persistence = new TeacherRelationshipsValidatorService(
+			personNodeUidGeneratorService, personNodeUidValidatorService);
 
 	@DisplayName("")
 	@Test

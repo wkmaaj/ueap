@@ -24,6 +24,7 @@ import org.pdbcorp.eap.uni.data.model.Course;
 import org.pdbcorp.eap.uni.data.model.Department;
 import org.pdbcorp.eap.uni.data.model.Subject;
 import org.pdbcorp.eap.uni.data.model.Teacher;
+import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.validate.ValidateEntityRelationshipsService;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +41,27 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 class SubjectRelationshipsValidatorService implements ValidateEntityRelationshipsService<Subject> {
 
+	private GenerateNodeUidService<Course> courseNodeUidGeneratorService;
 	private ValidateNodeUidService<Course> courseNodeUidValidatorService;
+	private GenerateNodeUidService<Department> departmentNodeUidGeneratorService;
 	private ValidateNodeUidService<Department> departmentNodeUidValidatorService;
+	private GenerateNodeUidService<Teacher> teacherNodeUidGeneratorService;
 	private ValidateNodeUidService<Teacher> teacherNodeUidValidatorService;
 
 	@Autowired
 	SubjectRelationshipsValidatorService(
+			@Qualifier("courseNodeUidGeneratorService") GenerateNodeUidService<Course> courseNodeUidGeneratorService,
 			@Qualifier("courseNodeUidValidatorService") ValidateNodeUidService<Course> courseNodeUidValidatorService,
+			@Qualifier("departmentNodeUidGeneratorService") GenerateNodeUidService<Department> departmentNodeUidGeneratorService,
 			@Qualifier("departmentNodeUidValidatorService") ValidateNodeUidService<Department> departmentNodeUidValidatorService,
+			@Qualifier("teacherNodeUidGeneratorService") GenerateNodeUidService<Teacher> teacherNodeUidGeneratorService,
 			@Qualifier("teacherNodeUidValidatorService") ValidateNodeUidService<Teacher> teacherNodeUidValidatorService) {
 		
+		this.courseNodeUidGeneratorService = courseNodeUidGeneratorService;
 		this.courseNodeUidValidatorService = courseNodeUidValidatorService;
+		this.departmentNodeUidGeneratorService = departmentNodeUidGeneratorService;
 		this.departmentNodeUidValidatorService = departmentNodeUidValidatorService;
+		this.teacherNodeUidGeneratorService = teacherNodeUidGeneratorService;
 		this.teacherNodeUidValidatorService = teacherNodeUidValidatorService;
 	}
 
@@ -63,6 +73,7 @@ class SubjectRelationshipsValidatorService implements ValidateEntityRelationship
 			}
 			Set<Course> validatedCourses = new HashSet<>();
 			for(Course course : subject.getCourses()) {
+				course.setNodeUid(courseNodeUidGeneratorService.generateNodeUid(course));
 				validatedCourses.add(courseNodeUidValidatorService.validateNodeUid(course));
 			}
 			subject.setCourses(validatedCourses);
@@ -77,6 +88,7 @@ class SubjectRelationshipsValidatorService implements ValidateEntityRelationship
 			}
 			Set<Teacher> validatedTeachers = new HashSet<>();
 			for(Teacher teacher : subject.getTeachers()) {
+				teacher.setNodeUid(teacherNodeUidGeneratorService.generateNodeUid(teacher));
 				validatedTeachers.add(teacherNodeUidValidatorService.validateNodeUid(teacher));
 			}
 			subject.setTeachers(validatedTeachers);
@@ -88,6 +100,7 @@ class SubjectRelationshipsValidatorService implements ValidateEntityRelationship
 		if(log.isTraceEnabled()) {
 			log.trace("Updating entity: {}", subject);
 		}
+		subject.getDepartment().setNodeUid(departmentNodeUidGeneratorService.generateNodeUid(subject.getDepartment()));
 		subject.setDepartment(departmentNodeUidValidatorService.validateNodeUid(subject.getDepartment()));
 		if(log.isDebugEnabled()) {
 			log.debug("Updated entity: {}", subject);

@@ -32,6 +32,7 @@ import org.pdbcorp.eap.uni.data.model.Course;
 import org.pdbcorp.eap.uni.data.model.Department;
 import org.pdbcorp.eap.uni.data.model.Subject;
 import org.pdbcorp.eap.uni.data.model.Teacher;
+import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.validate.ValidateEntityRelationshipsService;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
@@ -44,17 +45,23 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 class SubjectRelationshipsValidatorServiceTest {
 
 	@Mock
+	private GenerateNodeUidService<Course> courseNodeUidGeneratorService;
+	@Mock
 	private ValidateNodeUidService<Course> courseNodeUidValidatorService;
 	@Mock
+	private GenerateNodeUidService<Department> departmentNodeUidGeneratorService;
+	@Mock
 	private ValidateNodeUidService<Department> departmentNodeUidValidatorService;
+	@Mock
+	private GenerateNodeUidService<Teacher> teacherNodeUidGeneratorService;
 	@Mock
 	private ValidateNodeUidService<Teacher> teacherNodeUidValidatorService;
 
 	@InjectMocks
 	private ValidateEntityRelationshipsService<Subject> persistence = new SubjectRelationshipsValidatorService(
-			courseNodeUidValidatorService,
-			departmentNodeUidValidatorService,
-			teacherNodeUidValidatorService);
+			courseNodeUidGeneratorService, courseNodeUidValidatorService,
+			departmentNodeUidGeneratorService, departmentNodeUidValidatorService,
+			teacherNodeUidGeneratorService, teacherNodeUidValidatorService);
 
 	@DisplayName("")
 	@Test

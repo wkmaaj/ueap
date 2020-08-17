@@ -31,6 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.model.Department;
 import org.pdbcorp.eap.uni.data.model.University;
+import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.validate.ValidateEntityRelationshipsService;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
@@ -43,12 +44,18 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 class UniversityRelationshipsValidatorServiceTest {
 
 	@Mock
+	private GenerateNodeUidService<Address> addressNodeUidGeneratorService;
+	@Mock
 	private ValidateNodeUidService<Address> addressNodeUidValidatorService;
+	@Mock
+	private GenerateNodeUidService<Department> departmentNodeUidGeneratorService;
 	@Mock
 	private ValidateNodeUidService<Department> departmentNodeUidValidatorService;
 
 	@InjectMocks
-	private ValidateEntityRelationshipsService<University> persistence = new UniversityRelationshipsValidatorService(addressNodeUidValidatorService, departmentNodeUidValidatorService);
+	private ValidateEntityRelationshipsService<University> persistence = new UniversityRelationshipsValidatorService(
+			addressNodeUidGeneratorService, addressNodeUidValidatorService,
+			departmentNodeUidGeneratorService, departmentNodeUidValidatorService);
 
 	@DisplayName("")
 	@Test

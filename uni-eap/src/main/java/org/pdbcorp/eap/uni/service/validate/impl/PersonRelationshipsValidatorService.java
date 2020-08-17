@@ -23,6 +23,7 @@ import java.util.Set;
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.data.model.Vehicle;
+import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.validate.ValidateEntityRelationshipsService;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +40,21 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 class PersonRelationshipsValidatorService implements ValidateEntityRelationshipsService<Person> {
 
+	private GenerateNodeUidService<Address> addressNodeUidGeneratorService;
 	private ValidateNodeUidService<Address> addressNodeUidValidatorService;
+	private GenerateNodeUidService<Vehicle> vehicleNodeUidGeneratorService;
 	private ValidateNodeUidService<Vehicle> vehicleNodeUidValidatorService;
 
 	@Autowired
 	PersonRelationshipsValidatorService(
+			@Qualifier("addressNodeUidGeneratorService") GenerateNodeUidService<Address> addressNodeUidGeneratorService,
 			@Qualifier("addressNodeUidValidatorService") ValidateNodeUidService<Address> addressNodeUidValidatorService,
+			@Qualifier("vehicleNodeUidGeneratorService") GenerateNodeUidService<Vehicle> vehicleNodeUidGeneratorService,
 			@Qualifier("vehicleNodeUidValidatorService") ValidateNodeUidService<Vehicle> vehicleNodeUidValidatorService) {
 		
+		this.addressNodeUidGeneratorService = addressNodeUidGeneratorService;
 		this.addressNodeUidValidatorService = addressNodeUidValidatorService;
+		this.vehicleNodeUidGeneratorService = vehicleNodeUidGeneratorService;
 		this.vehicleNodeUidValidatorService = vehicleNodeUidValidatorService;
 	}
 
@@ -59,6 +66,7 @@ class PersonRelationshipsValidatorService implements ValidateEntityRelationships
 			}
 			Set<Address> validatedAddresses = new HashSet<>();
 			for(Address address : person.getAddresses()) {
+				address.setNodeUid(addressNodeUidGeneratorService.generateNodeUid(address));
 				validatedAddresses.add(addressNodeUidValidatorService.validateNodeUid(address));
 			}
 			person.setAddresses(validatedAddresses);
@@ -71,6 +79,7 @@ class PersonRelationshipsValidatorService implements ValidateEntityRelationships
 			if(log.isTraceEnabled()) {
 				log.trace("Updating entity: {}", person);
 			}
+			person.getVehicle().setNodeUid(vehicleNodeUidGeneratorService.generateNodeUid(person.getVehicle()));
 			person.setVehicle(vehicleNodeUidValidatorService.validateNodeUid(person.getVehicle()));
 			if(log.isDebugEnabled()) {
 				log.debug("Updated entity: {}", person);
