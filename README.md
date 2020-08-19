@@ -19,3 +19,6 @@ mvn spring-boot:run -Dspring-boot.run.profiles=dev -X
 `curl -i -v -w '\n' -X PATCH -H 'Content-Type:application/json' -H 'Accept:application/json' -d '{"fname":"Walid", "mname":"Mousa", "lname":"3ababney", "gender":"MALE"}'  http://localhost:9090/rest/api/address/update/679949c0-c112-41ff-a37e-7389991722a1/person`
 
 `curl -i -v -w '\n' -X PATCH -H 'Content-Type:application/json' -H 'Accept:application/json' -d '{"name":"NOVA"}' http://localhost:9090/rest/api/address/update/0ad28f86-d67e-481a-8f0e-7a98bde6b090/university`
+
+`curl -i -v -w '\n' -X PUT -H 'Content-Type:application/json; charset=UTF-8' -d '{"title":"Aeon Flux", "description":"Reactive is the new cool"}' http://localhost:9091/movies`
+
