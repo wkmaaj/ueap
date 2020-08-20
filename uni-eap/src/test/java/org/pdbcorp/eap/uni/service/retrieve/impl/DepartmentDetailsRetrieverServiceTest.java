@@ -35,6 +35,8 @@ import org.pdbcorp.eap.uni.data.model.Department;
 import org.pdbcorp.eap.uni.data.repo.DepartmentRepository;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
+import reactor.core.publisher.Mono;
+
 /**
  * 
  * @author jaradat-pdb
@@ -44,6 +46,8 @@ class DepartmentDetailsRetrieverServiceTest {
 
 	@Mock
 	private DepartmentRepository repository;
+	@Mock
+	private Mono<Department> mockMono;
 
 	@InjectMocks
 	private DepartmentDetailsRetrieverService service = new DepartmentDetailsRetrieverService(repository);
@@ -61,7 +65,8 @@ class DepartmentDetailsRetrieverServiceTest {
 	@Test
 	void validSaveEntityTest() throws Exception {
 		Department expected = TestDataFactoryUtil.generateDepartmentInstanceWithUniversity();
-		when(repository.save(any())).thenReturn(expected);
+		when(repository.save(any())).thenReturn(mockMono);
+		when(mockMono.block()).thenReturn(expected);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

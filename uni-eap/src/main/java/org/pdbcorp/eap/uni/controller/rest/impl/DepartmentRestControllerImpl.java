@@ -17,8 +17,6 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
-import java.util.Collection;
-
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.DepartmentRestController;
@@ -28,6 +26,8 @@ import org.pdbcorp.eap.uni.service.retrieve.impl.DepartmentDetailsRetrieverServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -49,7 +49,7 @@ public class DepartmentRestControllerImpl implements DepartmentRestController {
 	}
 
 	@Override
-	public Collection<Department> findAll() {
+	public Flux<Department> findAll() {
 		return departmentDetailsRetrieverService.findAll();
 	}
 

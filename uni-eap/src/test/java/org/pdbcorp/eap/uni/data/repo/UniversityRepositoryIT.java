@@ -20,13 +20,14 @@ package org.pdbcorp.eap.uni.data.repo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.neo4j.springframework.boot.test.autoconfigure.data.ReactiveDataNeo4jTest;
 import org.pdbcorp.eap.uni.data.model.University;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -38,22 +39,29 @@ import lombok.extern.slf4j.Slf4j;
  * @author jaradat-pdb
  */
 @ActiveProfiles("test")
-@DataNeo4jTest
 @DirtiesContext
 @ExtendWith(SpringExtension.class)
+@ReactiveDataNeo4jTest
 @Slf4j
-class UniversityRepositoryIT {
+class UniversityRepositoryIT extends BaseRepositoryIT {
 
 	@Autowired
 	private UniversityRepository repo;
+
+	@BeforeAll
+	static void setUp() throws Exception {
+		if(!neo4jContainer.isRunning())
+			neo4jContainer.start();
+	}
 
 	@DisplayName("Successfully save a UNIVERSITY node")
 	@Test
 	void validSaveTest() throws Exception {
 		University entity = TestDataFactoryUtil.generateUniversityInstance();
-		entity = repo.save(entity);
-		log.debug("{}", entity.getId());
-		assertFalse(StringUtils.isBlank(entity.getId()));
+		repo.save(entity).subscribe(
+				value -> assertFalse(StringUtils.isBlank(value.getId())),
+				error -> log.error("{}", error),
+				() -> log.warn("Completed without value nor error"));
 	}
 
 }

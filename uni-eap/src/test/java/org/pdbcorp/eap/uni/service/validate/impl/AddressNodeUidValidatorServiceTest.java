@@ -33,6 +33,8 @@ import org.pdbcorp.eap.uni.data.repo.BaseEntityRepository;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
+import reactor.core.publisher.Mono;
+
 /**
  * 
  * @author jaradat-pdb
@@ -42,6 +44,8 @@ class AddressNodeUidValidatorServiceTest {
 
 	@Mock
 	private BaseEntityRepository<Address> repository;
+	@Mock
+	private Mono<Address> mono;
 
 	@InjectMocks
 	private ValidateNodeUidService<Address> service = new AddressNodeUidValidatorService(repository);
@@ -51,7 +55,8 @@ class AddressNodeUidValidatorServiceTest {
 	void validValidateExistsTrueState() throws Exception {
 		Address dbNode = TestDataFactoryUtil.generateAddressStateInstance();
 		dbNode.setNodeUid("ABCD1234EFGH5678");
-		when(repository.findByNodeUid(dbNode.getNodeUid())).thenReturn(Optional.of(dbNode));
+		when(repository.findByNodeUid(dbNode.getNodeUid())).thenReturn(mono);
+		when(mono.blockOptional()).thenReturn(Optional.of(dbNode));
 		Address actual = service.validateNodeUid(dbNode);
 		assertEquals(dbNode, actual);
 	}
@@ -61,7 +66,8 @@ class AddressNodeUidValidatorServiceTest {
 	void validValidateExistsFalse() throws Exception {
 		Address dbNode = TestDataFactoryUtil.generateAddressProvinceInstance();
 		dbNode.setNodeUid("1234ABCD5678EFGH");
-		when(repository.findByNodeUid(dbNode.getNodeUid())).thenReturn(Optional.of(dbNode));
+		when(repository.findByNodeUid(dbNode.getNodeUid())).thenReturn(mono);
+		when(mono.blockOptional()).thenReturn(Optional.of(dbNode));
 		Address actual = service.validateNodeUid(dbNode);
 		assertEquals(dbNode, actual);
 	}

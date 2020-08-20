@@ -33,12 +33,17 @@ import org.pdbcorp.eap.uni.data.model.Subject;
 import org.pdbcorp.eap.uni.data.model.Teacher;
 import org.pdbcorp.eap.uni.data.model.University;
 import org.pdbcorp.eap.uni.data.model.Vehicle;
+import org.testcontainers.containers.Neo4jContainer;
 
 /**
  * 
  * @author jaradat-pdb
  */
 public final class TestDataFactoryUtil {
+
+	public static final boolean checkContainerRunning(Neo4jContainer<?> container) {
+		return container.isRunning();
+	}
 
 	public static final Address generateAddressInstanceWithPerson() throws ParseException {
 		Address address = generateAddressStateInstance();
@@ -96,12 +101,8 @@ public final class TestDataFactoryUtil {
 		return department;
 	}
 
-	public static final Enrollment generateEnrollmentInstance(Course course, Student student) {
-		return new Enrollment(student, course, new Date());
-	}
-
 	public static final Enrollment generateEnrollmentInstance() {
-		return new Enrollment(generateStudentInstance(), generateCourseInstance(), new Date());
+		return new Enrollment(new Date());
 	}
 
 	public static final Person generatePersonInstanceWithAddressStudentVehicle() throws ParseException {

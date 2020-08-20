@@ -34,6 +34,8 @@ import org.pdbcorp.eap.uni.data.repo.BaseEntityRepository;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
+import reactor.core.publisher.Mono;
+
 /**
  * 
  * @author jaradat-pdb
@@ -43,6 +45,8 @@ class UniversityNodeUidValidatorServiceTest {
 
 	@Mock
 	private BaseEntityRepository<University> repository;
+	@Mock
+	private Mono<University> mono;
 
 	@InjectMocks
 	private ValidateNodeUidService<University> service = new UniversityNodeUidValidatorService(repository);
@@ -52,7 +56,8 @@ class UniversityNodeUidValidatorServiceTest {
 	void validValidateExistsTrueState() throws Exception {
 		University dbNode = TestDataFactoryUtil.generateUniversityInstanceWithAddress();
 		dbNode.setNodeUid("ABCD1234");
-		when(repository.findByNodeUid(dbNode.getNodeUid())).thenReturn(Optional.of(dbNode));
+		when(repository.findByNodeUid(dbNode.getNodeUid())).thenReturn(mono);
+		when(mono.blockOptional()).thenReturn(Optional.of(dbNode));
 		University actual = service.validateNodeUid(dbNode);
 		assertEquals(dbNode, actual);
 	}
@@ -65,7 +70,8 @@ class UniversityNodeUidValidatorServiceTest {
 		dbNode1.setNodeUid("EFGH4567");
 		dbNode2.setNodeUid("ABCD1234");
 		dbNode2.setName("124 Fake St");
-		when(repository.findByNodeUid(dbNode2.getNodeUid())).thenReturn(Optional.empty());
+		when(repository.findByNodeUid(dbNode2.getNodeUid())).thenReturn(mono);
+		when(mono.blockOptional()).thenReturn(Optional.empty());
 		University actual = service.validateNodeUid(dbNode2);
 		assertEquals(dbNode2, actual);
 		assertNotEquals(dbNode1, actual);

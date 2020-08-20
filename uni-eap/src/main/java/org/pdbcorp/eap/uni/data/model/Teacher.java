@@ -22,9 +22,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.springframework.data.core.schema.Node;
+import org.neo4j.springframework.data.core.schema.Property;
+import org.neo4j.springframework.data.core.schema.Relationship;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -41,26 +41,26 @@ import lombok.Setter;
  * @author jaradat-pdb
  */
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Getter
-@NodeEntity(label="TEACHER")
+@Node(primaryLabel = "TEACHER")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 public class Teacher extends OccupationEntity {
 
 	@NonNull
-	@Property(name="NAME")
+	@Property(name = "NAME")
 	private String name;
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("teacher")
-	@Relationship(type="TEACHES_CLASS")
+	@Relationship(type = "TEACHES_CLASS", direction = Relationship.Direction.OUTGOING)
 	private Set<Course> courses = new HashSet<>();
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("teachers")
-	@Relationship(type="TAUGHT_BY", direction=Relationship.INCOMING)
+	@Relationship(type = "TAUGHT_BY", direction = Relationship.Direction.INCOMING)
 	private Set<Subject> subjects = new HashSet<>();
 
 	@Override

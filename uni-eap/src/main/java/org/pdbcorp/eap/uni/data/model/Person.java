@@ -23,12 +23,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
-import org.neo4j.ogm.annotation.typeconversion.DateLong;
-import org.neo4j.ogm.annotation.typeconversion.EnumString;
+import org.neo4j.springframework.data.core.schema.Node;
+import org.neo4j.springframework.data.core.schema.Property;
+import org.neo4j.springframework.data.core.schema.Relationship;
 import org.pdbcorp.eap.uni.data.constant.GenderEnum;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -46,47 +45,47 @@ import lombok.Setter;
  * @author jaradat-pdb
  */
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Getter
-@NodeEntity(label="PERSON")
+@Node(primaryLabel = "PERSON")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 public class Person extends GeneratedValueIdEntity {
 
 	@NonNull
-	@Property(name="FIRST_NAME")
+	@Property(name = "FIRST_NAME")
 	private String fname;
-
-	@Property(name="MIDDLE_NAME")
+ 
+	@Property(name = "MIDDLE_NAME")
 	private String mname;
 
 	@NonNull
-	@Property(name="LAST_NAME")
+	@Property(name = "LAST_NAME")
 	private String lname;
 
-	@DateLong
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
-	@Property(name="BIRTH_DATE")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@Property(name = "BIRTH_DATE")
 	private Date dob;
 
-	@Property(name="GENDER")
-	@EnumString(value=GenderEnum.class)
+	@Property(name = "GENDER")
+//	@EnumString(value=GenderEnum.class)
 	private GenderEnum gender;
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("person")
-	@Relationship(type="CURRENT_OCCUPATION", direction=Relationship.INCOMING)
+	@Relationship(type = "CURRENT_OCCUPATION", direction = Relationship.Direction.INCOMING)
 	private OccupationEntity occupation;
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("persons")
-	@Relationship(type="RESIDED_ADDRESS")
+	@Relationship(type = "RESIDED_ADDRESS", direction = Relationship.Direction.OUTGOING)
 	private Set<Address> addresses = new HashSet<>();
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("person")
-	@Relationship(type="OWNED_VEHICLE")
+	@Relationship(type = "OWNED_VEHICLE", direction = Relationship.Direction.OUTGOING)
 	private Vehicle vehicle;
 
 	@Override

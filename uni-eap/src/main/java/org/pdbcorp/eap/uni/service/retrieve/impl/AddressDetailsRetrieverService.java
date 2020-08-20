@@ -17,8 +17,6 @@
  */
 package org.pdbcorp.eap.uni.service.retrieve.impl;
 
-import java.util.Collection;
-
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.repo.AddressRepository;
 import org.pdbcorp.eap.uni.service.retrieve.gnrc.RetrieveBaseEntityDetailsService;
@@ -26,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -43,7 +42,7 @@ public class AddressDetailsRetrieverService extends RetrieveBaseEntityDetailsSer
 		this.addressRepository = addressRepository;
 	}
 
-	public Collection<Address> findByAddrLine1(String addrLine1) {
+	public Flux<Address> findByAddrLine1(String addrLine1) {
 		return addressRepository.findByAddrLine1(addrLine1);
 	}
 

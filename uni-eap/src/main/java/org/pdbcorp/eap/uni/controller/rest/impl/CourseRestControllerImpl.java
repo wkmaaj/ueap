@@ -17,8 +17,6 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
-import java.util.Collection;
-
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.CourseRestController;
@@ -28,6 +26,8 @@ import org.pdbcorp.eap.uni.service.retrieve.impl.CourseDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -49,7 +49,7 @@ public class CourseRestControllerImpl implements CourseRestController {
 	}
 
 	@Override
-	public Collection<Course> findAll() {
+	public Flux<Course> findAll() {
 		return courseDetailsRetrieverService.findAll();
 	}
 

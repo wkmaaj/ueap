@@ -22,9 +22,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.springframework.data.core.schema.Node;
+import org.neo4j.springframework.data.core.schema.Property;
+import org.neo4j.springframework.data.core.schema.Relationship;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -41,46 +41,46 @@ import lombok.Setter;
  * @author jaradat-pdb
  */
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Getter
-@NodeEntity(label="ADDRESS")
+@Node(primaryLabel = "ADDRESS")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 public class Address extends GeneratedValueIdEntity {
 
 	@NonNull
-	@Property(name="ADDR_LINE_1")
+	@Property(name = "ADDR_LINE_1")
 	private String addrLine1;
 
-	@Property(name="ADDR_LINE_2")
+	@Property(name = "ADDR_LINE_2")
 	private String addrLine2;
 
 	@NonNull
-	@Property(name="CITY")
+	@Property(name = "CITY")
 	private String city;
 
-	@Property(name="STATE")
+	@Property(name = "STATE")
 	private String state;
 
-	@Property(name="PROVINCE")
+	@Property(name = "PROVINCE")
 	private String province;
 
 	@NonNull
-	@Property(name="COUNTRY")
+	@Property(name = "COUNTRY")
 	private String country;
 
-	@Property(name="POSTAL_CODE")
+	@Property(name = "POSTAL_CODE")
 	private String postalCode;
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("addresses")
-	@Relationship(type="RESIDED_ADDRESS", direction=Relationship.INCOMING)
+	@Relationship(type = "RESIDED_ADDRESS", direction = Relationship.Direction.INCOMING)
 	private Set<Person> persons = new HashSet<>();
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("address")
-	@Relationship(type="UNI_ADDRESS", direction=Relationship.INCOMING)
+	@Relationship(type = "UNI_ADDRESS", direction = Relationship.Direction.INCOMING)
 	private University university;
 
 	@Override

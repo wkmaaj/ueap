@@ -17,13 +17,13 @@
  */
 package org.pdbcorp.eap.uni.service.retrieve.gnrc;
 
-import java.util.Collection;
-
 import org.pdbcorp.eap.uni.data.model.BaseEntity;
 import org.pdbcorp.eap.uni.data.repo.BaseEntityRepository;
 import org.pdbcorp.eap.uni.error.EntityNotFoundException;
 import org.pdbcorp.eap.uni.service.retrieve.RetrieveEntityDetailsService;
 import org.slf4j.Logger;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -40,28 +40,36 @@ public abstract class RetrieveBaseEntityDetailsService<T extends BaseEntity> imp
 	}
 
 	@Override
-	public Collection<T> findAll() {
-		return (Collection<T>) repository.findAll();
+	public Flux<T> findAll() {
+		return repository.findAll();
 	}
 
 	@Override
 	public T findByEntityId(String id) {
-		return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("Unable to find entity with id: %s", id)));
+		return repository.findById(id)
+				.blockOptional()
+				.orElseThrow(
+						() -> new EntityNotFoundException(
+								String.format("Unable to find entity with id: %s", id)));
 	}
 
 	public T findByNodeUid(String nodeUid) {
-		return repository.findByNodeUid(nodeUid).orElseThrow(() -> new EntityNotFoundException(String.format("Unable to find entity with nodeUid: %s", nodeUid)));
+		return repository.findByNodeUid(nodeUid)
+				.blockOptional()
+				.orElseThrow(
+						() -> new EntityNotFoundException(
+								String.format("Unable to find entity with nodeUid: %s", nodeUid)));
 	}
 
 	public T saveEntity(T entity) {
 		if(log.isTraceEnabled()) {
 			log.trace("Saving entity: {}", entity);
 		}
-		entity = repository.save(entity);
+		entity = repository.save(entity).block();
 		if(log.isDebugEnabled()) {
 			log.debug("Saved entity: {}", entity);
 		}
-		return repository.save(entity);
+		return entity;
 	}
 
 }

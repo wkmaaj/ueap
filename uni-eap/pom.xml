@@ -19,6 +19,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 		<cxf-jaxrs.version>3.3.7</cxf-jaxrs.version>
 		<java.version>11</java.version>
 		<neo4j-harness.version>3.2.14</neo4j-harness.version>
+		<spring-data-neo4j-rx.version>1.1.1</spring-data-neo4j-rx.version>
+		<testcontainers.version>1.14.3</testcontainers.version>
 	</properties>
 
 	<dependencies>
@@ -42,6 +44,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 			<version>${cxf-jaxrs.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.neo4j.springframework.data</groupId>
+			<artifactId>spring-data-neo4j-rx-spring-boot-starter</artifactId>
+			<version>${spring-data-neo4j-rx.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 			<exclusions>
@@ -55,10 +62,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-neo4j</artifactId>
-		</dependency>
+		</dependency -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
@@ -78,9 +85,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 
 		<!-- Runtime and/or Optional dependencies -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -89,12 +95,30 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
 
 		<!-- Testing dependencies -->
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j.springframework.data</groupId>
+			<artifactId>spring-data-neo4j-rx-spring-boot-test-autoconfigure</artifactId>
+			<version>${spring-data-neo4j-rx.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.neo4j.test</groupId>
+					<artifactId>neo4j-harness</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -106,7 +130,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-ogm-embedded-driver</artifactId>
 			<scope>test</scope>
@@ -116,11 +140,36 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 			<artifactId>neo4j-harness</artifactId>
 			<version>${neo4j-harness.version}</version>
 			<scope>test</scope>
+		</dependency -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>neo4j</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
+		<finalName>ueap-${project.version}</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

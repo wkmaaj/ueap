@@ -17,9 +17,9 @@
  */
 package org.pdbcorp.eap.uni.service.retrieve;
 
-import java.util.Collection;
-
 import org.pdbcorp.eap.uni.data.model.BaseEntity;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -27,7 +27,7 @@ import org.pdbcorp.eap.uni.data.model.BaseEntity;
  */
 public interface RetrieveEntityDetailsService<T extends BaseEntity> {
 
-	Collection<T> findAll();
+	Flux<T> findAll();
 
 	T findByEntityId(String id);
 
