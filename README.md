@@ -22,3 +22,6 @@ mvn spring-boot:run -Dspring-boot.run.profiles=dev -X
 
 `curl -i -v -w '\n' -X PUT -H 'Content-Type:application/json; charset=UTF-8' -d '{"title":"Aeon Flux", "description":"Reactive is the new cool"}' http://localhost:9091/movies`
 
+`docker run -p 7474:7474 -p 7687:7687 --volume=/workspace/docker/pdbneo/data:/var/lib/neo4j/data --volume=/workspace/docker/pdbneo/plugins:/var/lib/neo4j/plugins -e NEO4J_AUTH=neo4j/admin --env NEO4J_dbms_security_procedures_unrestricted=apoc.* --name pdbneo -d neo4j:latest`
+[Docker Neo4j APOC Install](https://community.neo4j.com/t/docker-compose-setting-for-apoc-installation/11621)
+
