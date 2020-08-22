@@ -7,7 +7,7 @@
 ***
 
 ## Common Commands
-#### Application
+### Application
 
 ```sh
 java -jar uni-eap-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
@@ -16,7 +16,7 @@ java -jar uni-eap-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
 mvn spring-boot:run -Dspring-boot.run.profiles=dev -X
 ```
 
-#### cURL
+### cURL
 ```sh
 curl -i -X POST -H 'Content-Type:application/json' -w '\n' -v -d '{"addrLine1":"123 Fake Ave", "city":"Springfield", "country":"USA"}' http://localhost:9090/rest/api/address/save
 ```
@@ -42,7 +42,7 @@ curl -i -v -w '\n' -X PATCH -H 'Content-Type:application/json' -H 'Accept:applic
 curl -i -v -w '\n' -X PUT -H 'Content-Type:application/json; charset=UTF-8' -d '{"title":"Aeon Flux", "description":"Reactive is the new cool"}' http://localhost:9091/movies
 ```
 
-#### Docker
+### Docker
 ```sh
 docker run -p 7474:7474 -p 7687:7687 --volume=/workspace/docker/pdbneo/data:/var/lib/neo4j/data --volume=/workspace/docker/pdbneo/plugins:/var/lib/neo4j/plugins -e NEO4J_AUTH=neo4j/admin --env NEO4J_dbms_security_procedures_unrestricted=apoc.* --name pdbneo -d neo4j:latest
 ```
