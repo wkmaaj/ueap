@@ -1,5 +1,10 @@
 # ueap
-University Enterprise Application Platform
+
+> University Enterprise Application Platform
+
+[![License](https://img.shields.io/github/license/balena-io/etcher.svg?style=flat-square)](https://github.com/jaradat-pdb/ueap/blob/master/LICENSE)
+
+***
 
 ### Running Commands
 java -jar uni-eap-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
