@@ -44,13 +44,22 @@ public abstract class RetrieveBaseEntityDetailsService<T extends BaseEntity> imp
 		return repository.findAll();
 	}
 
+	private T processMonoOnNext(T entity, T t) {
+//		entity = t;
+		return (entity = t);
+	}
+
 	@Override
 	public T findByEntityId(String id) {
-		return repository.findById(id)
-				.blockOptional()
-				.orElseThrow(
-						() -> new EntityNotFoundException(
-								String.format("Unable to find entity with id: %s", id)));
+		T entity = null;
+		repository.findById(id).subscribe(
+				//o -> prcoessOnNext(o),
+				//e -> processError(e),
+				//() -> processCompletion(),
+				//d -> processSubscription()
+				t -> processMonoOnNext(entity, t)
+				);
+		return entity;
 	}
 
 	public T findByNodeUid(String nodeUid) {
@@ -65,7 +74,8 @@ public abstract class RetrieveBaseEntityDetailsService<T extends BaseEntity> imp
 		if(log.isTraceEnabled()) {
 			log.trace("Saving entity: {}", entity);
 		}
-		entity = repository.save(entity).block();
+		repository.save(entity).subscribe(
+				t -> processMonoOnNext(entity, t));
 		if(log.isDebugEnabled()) {
 			log.debug("Saved entity: {}", entity);
 		}
