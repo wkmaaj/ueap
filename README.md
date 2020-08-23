@@ -2,6 +2,7 @@
 
 > University Enterprise Application Platform
 
+[![Current Release](https://img.shields.io/github/release/balena-io/etcher.svg?style=flat-square)](https://github.com/jaradat-pdb/ueap/)
 [![License](https://img.shields.io/github/license/balena-io/etcher.svg?style=flat-square)](https://github.com/jaradat-pdb/ueap/blob/master/LICENSE)
 
 ***
