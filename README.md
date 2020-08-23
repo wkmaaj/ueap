@@ -42,6 +42,10 @@ curl -i -v -w '\n' -X PATCH -H 'Content-Type:application/json' -H 'Accept:applic
 ```sh
 curl -i -v -w '\n' -X PUT -H 'Content-Type:application/json; charset=UTF-8' -d '{"title":"Aeon Flux", "description":"Reactive is the new cool"}' http://localhost:9091/movies
 ```
+The following cURL command will retrieve the [Neo4j APOC Library](https://neo4j.com/developer/neo4j-apoc/), v4.1.0.2-all:
+```sh
+curl -L https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/4.1.0.2/apoc-4.1.0.2-all.jar -O
+```
 
 ### Docker
 ```sh
