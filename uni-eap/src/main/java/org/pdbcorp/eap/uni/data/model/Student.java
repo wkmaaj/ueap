@@ -17,16 +17,13 @@
  */
 package org.pdbcorp.eap.uni.data.model;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.Map;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.neo4j.springframework.data.core.schema.Node;
+import org.neo4j.springframework.data.core.schema.Property;
+import org.neo4j.springframework.data.core.schema.Relationship;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -41,22 +38,22 @@ import lombok.Setter;
  * @author jaradat-pdb
  */
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Getter
-@NodeEntity(label="STUDENT")
+@Node(primaryLabel = "STUDENT")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 public class Student extends OccupationEntity {
 
 	@NonNull
-	@Property(name="NAME")
+	@Property(name = "NAME")
 	private String name;
 
 	@EqualsAndHashCode.Exclude
-	@JsonIgnoreProperties("student")
-	@Relationship(type="ENROLLED")
-	private Set<Enrollment> enrollments = new HashSet<>();
+//	@JsonIgnoreProperties("student")
+	@Relationship(type = "ENROLLED", direction = Relationship.Direction.OUTGOING)
+	private Map<Course, Enrollment> enrolledCourses = new HashMap<>();
 
 //	@Relationship(type="BUDDY", direction=Relationship.INCOMING)
 //	private Set<StudyBuddy> studyBuddies;
@@ -78,22 +75,23 @@ public class Student extends OccupationEntity {
 			builder.append(", person=");
 			builder.append(this.getPerson());
 		}
-		if (enrollments != null) {
+		if (enrolledCourses != null) {
 			builder.append(", enrollments=");
-			builder.append(toString(enrollments, maxLen));
+			builder.append(toString(enrolledCourses, maxLen));
 		}
 		builder.append("]");
 		return builder.toString();
 	}
 
-	private String toString(Collection<?> collection, int maxLen) {
+	private String toString(Map<?, ?> map, int maxLen) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("[");
 		int i = 0;
-		for (Iterator<?> iterator = collection.iterator(); iterator.hasNext() && i < maxLen; i++) {
+		for (Iterator<?> iterator = map.keySet().iterator(); iterator.hasNext() && i < maxLen; i++) {
+			Object key = iterator.next();
 			if (i > 0)
 				builder.append(", ");
-			builder.append(iterator.next());
+			builder.append("{").append(key).append(": ").append(map.get(key)).append("}");
 		}
 		builder.append("]");
 		return builder.toString();

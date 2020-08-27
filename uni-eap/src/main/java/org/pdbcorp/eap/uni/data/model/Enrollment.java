@@ -19,15 +19,11 @@ package org.pdbcorp.eap.uni.data.model;
 
 import java.util.Date;
 
-import org.neo4j.ogm.annotation.EndNode;
-import org.neo4j.ogm.annotation.RelationshipEntity;
-import org.neo4j.ogm.annotation.StartNode;
-import org.neo4j.ogm.annotation.typeconversion.DateLong;
+import org.neo4j.springframework.data.core.schema.RelationshipProperties;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,27 +35,27 @@ import lombok.Setter;
  * 
  * @author jaradat-pdb
  */
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+//@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Getter
 @NoArgsConstructor
-@RelationshipEntity(type="ENROLLED")
+@RelationshipProperties
 @RequiredArgsConstructor
 @Setter
 public class Enrollment extends GeneratedValueIdEntity {
 
-	@EqualsAndHashCode.Exclude
-	@JsonIgnoreProperties("enrollments")
-	@StartNode
-	private Student student;
+//	@EqualsAndHashCode.Exclude
+//	@JsonIgnoreProperties("enrollments")
+//	@StartNode
+//	private Student student;
 
-	@EqualsAndHashCode.Exclude
-	@JsonIgnoreProperties("enrollments")
-	@EndNode
-	private Course course;
+//	@EqualsAndHashCode.Exclude
+//	@JsonIgnoreProperties("enrollments")
+//	@EndNode
+//	private Course course;
 
-	@DateLong
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	@NonNull
 	private Date enrolledDate;
 
@@ -75,14 +71,14 @@ public class Enrollment extends GeneratedValueIdEntity {
 			builder.append(", enrolledDate=");
 			builder.append(enrolledDate);
 		}
-		if (student != null) {
-			builder.append(", studentId=");
-			builder.append(student.getId());
-		}
-		if (course != null) {
-			builder.append(", courseId=");
-			builder.append(course.getId());
-		}
+//		if (student != null) {
+//			builder.append(", studentId=");
+//			builder.append(student.getId());
+//		}
+//		if (course != null) {
+//			builder.append(", courseId=");
+//			builder.append(course.getId());
+//		}
 		builder.append("]");
 		return builder.toString();
 	}

@@ -53,7 +53,7 @@ public abstract class ValidateBaseEntityNodeUidService<T extends BaseEntity> imp
 	 */
 	@Override
 	public T validateNodeUid(T entity) {
-		Optional<T> dbRes = baseEntityRepository.findByNodeUid(entity.getNodeUid());
+		Optional<T> dbRes = baseEntityRepository.findByNodeUid(entity.getNodeUid()).blockOptional();
 		if(dbRes.isEmpty()) {
 			log.info("Identified unique node with no currently existing nodeUid: {}", entity);
 			return entity;

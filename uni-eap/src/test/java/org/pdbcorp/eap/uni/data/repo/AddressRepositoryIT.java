@@ -17,77 +17,86 @@
  */
 package org.pdbcorp.eap.uni.data.repo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Collection;
-
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.neo4j.springframework.boot.test.autoconfigure.data.ReactiveDataNeo4jTest;
 import org.pdbcorp.eap.uni.data.model.Address;
-import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
 
 /**
  * 
  * @author jaradat-pdb
  */
 @ActiveProfiles("test")
-@DataNeo4jTest
 @DirtiesContext
 @ExtendWith(SpringExtension.class)
+@ReactiveDataNeo4jTest
 @Slf4j
-class AddressRepositoryIT {
+class AddressRepositoryIT extends BaseRepositoryIT {
 
 	@Autowired
 	private AddressRepository repo;
+
+	@BeforeAll
+	static void setUp() throws Exception {
+		if(!neo4jContainer.isRunning())
+			neo4jContainer.start();
+	}
 
 	@DisplayName("Successfully save an ADDRESS node")
 	@Test
 	void validSaveTest() throws Exception {
 		Address entity = TestDataFactoryUtil.generateAddressStateInstance();
-		entity = repo.save(entity);
-		log.debug("{}", entity);
-		assertFalse(StringUtils.isBlank(entity.getId()));
+		repo.save(entity).subscribe(
+				value -> assertFalse(StringUtils.isBlank(value.getId())),
+				error -> log.error("{}", error),
+				() -> log.warn("Completed without value nor error"));
 	}
 
 	@DisplayName("Successfully save an ADDRESS node with a related PERSON node")
 	@Test
 	void validSaveTestWithPerson() throws Exception {
 		Address entity = TestDataFactoryUtil.generateAddressInstanceWithPerson();
-		entity = repo.save(entity);
-		log.debug("{}", entity);
-		assertFalse(StringUtils.isBlank(entity.getId()));
-		for(Person person : entity.getPersons()) {
-			assertFalse(StringUtils.isBlank(person.getId()));
-		}
+		repo.save(entity).subscribe(
+				value -> assertEquals(entity, value),
+				error -> log.error("{}", error),
+				() -> log.warn("Completed without value nor error"));
 	}
 
 	@DisplayName("Successfully save an ADDRESS node with a related UNIVERSITY node")
 	@Test
 	void validSaveTestWithUniversity() throws Exception {
 		Address entity = TestDataFactoryUtil.generateAddressInstanceWithUniversity();
-		entity = repo.save(entity);
-		log.debug("{}", entity);
-		assertFalse(StringUtils.isBlank(entity.getId()));
-		assertFalse(StringUtils.isBlank(entity.getUniversity().getId()));
+		repo.save(entity).subscribe(
+				value -> assertEquals(entity, value),
+				error -> log.error("{}", error),
+				() -> log.warn("Completed without value nor error"));
 	}
 
 	@DisplayName("Successfully lookup an ADDRESS node by ADDR_LINE_1 field property")
 	@Test
 	void validFindByAddrLine1Test() throws Exception {
-		Address expected = repo.save(TestDataFactoryUtil.generateAddressStateInstance());
-		Collection<Address> result = repo.findByAddrLine1("123 Fake St");
-		assertTrue(result.contains(expected));
+		Address expected = TestDataFactoryUtil.generateAddressStateInstance();
+		repo.save(expected);
+		Flux<Address> result = repo.findByAddrLine1("123 Fake St");
+		result.hasElement(expected).subscribe(
+				value -> assertTrue(value),
+				error -> log.error("{}", error),
+				() -> log.warn("Completed without value nor error"));
 	}
 
 }

@@ -17,8 +17,10 @@
  */
 package org.pdbcorp.eap.uni.service.generate.impl;
 
+import java.text.SimpleDateFormat;
+
 import org.apache.commons.lang3.StringUtils;
-import org.pdbcorp.eap.uni.data.model.Vehicle;
+import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.springframework.stereotype.Service;
 
@@ -30,38 +32,39 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-class VehicleNodeUidGenerationService implements GenerateNodeUidService<Vehicle> {
+class PersonNodeUidGeneratorService implements GenerateNodeUidService<Person> {
 
 	/**
 	 * This method constructs a <i>unique identifying</i> {@link java.lang.String String} based on the properties
-	 * of the <code>VEHICLE</code> node. This {@link java.lang.String String} will be used in comparing and
-	 * determining if a <code>VEHICLE</code> node already exists in the datastore with all the same field properties
-	 * (i.e. <code>make</code>, <code>model</code>, <code>year</code>, <code>licensePlate</code>, <code>vin</code>).
-	 * This method does not factor in relational properties (i.e. ignores <code>person</code> property).
+	 * of the <code>PERSON</code> node. This {@link java.lang.String String} will be used in comparing and determining
+	 * if a <code>PERSON</code> node already exists in the datastore with all the same field properties (i.e.
+	 * <code>fname</code>, <code>mname</code>, <code>lname</code>, <code>dob</code>, <code>gender</code>).
+	 * This method does not factor in relational properties (i.e. ignores <code>addresses</code>, <code>vehicle</code>,
+	 * and <code>occupation</code> properties).
 	 * 
-	 * @param vehicle - the <code>VEHICLE</code> object to construct the unique ID for.
+	 * @param person - the <code>PERSON</code> object to construct the unique ID for.
 	 * @return String - the unique ID for the node based off of its properties.
 	 */
 	@Override
-	public String generateNodeUid(Vehicle vehicle) {
+	public String generateNodeUid(Person person) {
 		StringBuilder stringBuilder = new StringBuilder();
 		if(log.isTraceEnabled()) {
-			log.trace("Building propsUid for entity: {}", vehicle);
+			log.trace("Building propsUid for entity: {}", person);
 		}
 		
-		if(!StringUtils.isBlank(vehicle.getMake())) {
-			stringBuilder.append(vehicle.getMake());
-			if(!StringUtils.isBlank(vehicle.getModel())) {
-				stringBuilder.append(", ").append(vehicle.getModel());
+		if(!StringUtils.isBlank(person.getFname())) {
+			stringBuilder.append(person.getFname());
+			if(!StringUtils.isBlank(person.getMname())) {
+				stringBuilder.append(", ").append(person.getMname());
 			}
-			if(!StringUtils.isBlank(String.valueOf(vehicle.getYear()))) {
-				stringBuilder.append(", ").append(String.valueOf(vehicle.getYear()));
+			if(!StringUtils.isBlank(person.getLname())) {
+				stringBuilder.append(", ").append(person.getLname());
 			}
-			if(!StringUtils.isBlank(vehicle.getLicensePlate())) {
-				stringBuilder.append(", ").append(vehicle.getLicensePlate());
+			if(person.getDob() != null) {
+				stringBuilder.append(", ").append(new SimpleDateFormat("yyyy-MM-dd").format(person.getDob()));
 			}
-			if(!StringUtils.isBlank(vehicle.getVin())) {
-				stringBuilder.append(", ").append(vehicle.getVin());
+			if(person.getGender() != null) {
+				stringBuilder.append(", ").append(person.getGender().getName());
 			}
 			if(log.isDebugEnabled()) {
 				log.debug("Successfully constructed propsUid: {}", stringBuilder.toString());

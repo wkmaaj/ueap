@@ -18,7 +18,7 @@
 package org.pdbcorp.eap.uni.service.generate.impl;
 
 import org.apache.commons.lang3.StringUtils;
-import org.pdbcorp.eap.uni.data.model.Teacher;
+import org.pdbcorp.eap.uni.data.model.University;
 import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.springframework.stereotype.Service;
 
@@ -30,29 +30,29 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Service
-class TeacherNodeUidGenerationService implements GenerateNodeUidService<Teacher>{
+class UniversityNodeUidGeneratorService implements GenerateNodeUidService<University> {
 
 	/**
 	 * This method constructs a <i>unique identifying</i> {@link java.lang.String String} based on the properties
-	 * of the <code>TEACHER</code> node. This {@link java.lang.String String} will be used in comparing and determining
-	 * if a <code>TEACHER</code> node already exists in the datastore with all the same field properties (i.e.
-	 * <code>name</code> and <code>person</code>). This method does not factor in relational properties
-	 * (i.e. ignores <code>courses</code> and <code>subjects</code> properties).
+	 * of the <code>UNIVERSITY</code> node. This {@link java.lang.String String} will be used in comparing and
+	 * determining if a <code>UNIVERSITY</code> node already exists in the datastore with all the same field
+	 * properties (i.e. <code>name</code> and <code>address</code>). This method does not factor in relational
+	 * properties (i.e. ignores <code>departments</code> property).
 	 * 
-	 * @param teacher - the <code>TEACHER</code> object to construct the unique ID for.
+	 * @param university - the <code>UNIVERSITY</code> object to construct the unique ID for.
 	 * @return String - the unique ID for the node based off of its properties.
 	 */
 	@Override
-	public String generateNodeUid(Teacher teacher) {
+	public String generateNodeUid(University university) {
 		StringBuilder stringBuilder = new StringBuilder();
 		if(log.isTraceEnabled()) {
-			log.trace("Building propsUid for entity: {}", teacher);
+			log.trace("Building propsUid for entity: {}", university);
 		}
 		
-		if(!StringUtils.isBlank(teacher.getName())) {
-			stringBuilder.append(teacher.getName());
-			if(teacher.getPerson() != null) {
-				stringBuilder.append(", personId: ").append(teacher.getPerson().getId());
+		if(!StringUtils.isBlank(university.getName())) {
+			stringBuilder.append(university.getName());
+			if(university.getAddress() != null) {
+				stringBuilder.append(", addressId: ").append(university.getAddress().getId());
 			}
 			if(log.isDebugEnabled()) {
 				log.debug("Successfully constructed propsUid: {}", stringBuilder.toString());

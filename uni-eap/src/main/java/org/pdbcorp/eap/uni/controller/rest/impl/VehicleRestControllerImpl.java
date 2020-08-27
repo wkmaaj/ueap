@@ -17,15 +17,17 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
-import java.util.Collection;
-
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.VehicleRestController;
 import org.pdbcorp.eap.uni.data.model.Vehicle;
+import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.retrieve.impl.VehicleDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -34,26 +36,31 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class VehicleRestControllerImpl implements VehicleRestController {
 
-	private VehicleDetailsRetrieverService vehicleDetailsService;
+	private VehicleDetailsRetrieverService vehicleDetailsRetrieverService;
+	private AddEntityProcessFlow<Vehicle> addVehicleProcessFlow;
 
 	@Autowired
-	public VehicleRestControllerImpl(VehicleDetailsRetrieverService vehicleDetailsService) {
-		this.vehicleDetailsService = vehicleDetailsService;
+	public VehicleRestControllerImpl(
+			VehicleDetailsRetrieverService vehicleDetailsRetrieverService,
+			@Qualifier("addVehicleProcessFlow") AddEntityProcessFlow<Vehicle> addVehicleProcessFlow) {
+		
+		this.vehicleDetailsRetrieverService = vehicleDetailsRetrieverService;
+		this.addVehicleProcessFlow = addVehicleProcessFlow;
 	}
 
 	@Override
-	public Collection<Vehicle> findAll() {
-		return vehicleDetailsService.findAll();
+	public Flux<Vehicle> findAll() {
+		return vehicleDetailsRetrieverService.findAll();
 	}
 
 	@Override
 	public Response findByMakeAndModel(String make, String model) {
-		return Response.ok(vehicleDetailsService.findByMakeAndModel(make, model)).build();
+		return Response.ok(vehicleDetailsRetrieverService.findByMakeAndModel(make, model)).build();
 	}
 
 	@Override
 	public Response saveVehicle(Vehicle vehicle) {
-		return Response.ok(vehicleDetailsService.saveEntity(vehicle)).build();
+		return Response.ok(addVehicleProcessFlow.execute(vehicle)).build();
 	}
 
 }

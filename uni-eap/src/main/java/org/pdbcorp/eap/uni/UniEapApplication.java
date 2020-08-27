@@ -17,13 +17,14 @@
  */
 package org.pdbcorp.eap.uni;
 
+import org.neo4j.springframework.data.repository.config.EnableReactiveNeo4jRepositories;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@EnableNeo4jRepositories(basePackages = "org.pdbcorp.eap.uni.data.repo")
+//@EnableNeo4jRepositories(basePackages = "org.pdbcorp.eap.uni.data.repo")
+@EnableReactiveNeo4jRepositories(basePackages = "org.pdbcorp.eap.uni.data.repo")
 @EnableTransactionManagement
 @EntityScan(basePackages = "org.pdbcorp.eap.uni.data.model")
 @SpringBootApplication

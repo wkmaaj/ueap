@@ -17,13 +17,13 @@
  */
 package org.pdbcorp.eap.uni.service.retrieve.gnrc;
 
-import java.util.Collection;
-
 import org.pdbcorp.eap.uni.data.model.BaseEntity;
 import org.pdbcorp.eap.uni.data.repo.BaseEntityRepository;
 import org.pdbcorp.eap.uni.error.EntityNotFoundException;
 import org.pdbcorp.eap.uni.service.retrieve.RetrieveEntityDetailsService;
 import org.slf4j.Logger;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -40,28 +40,46 @@ public abstract class RetrieveBaseEntityDetailsService<T extends BaseEntity> imp
 	}
 
 	@Override
-	public Collection<T> findAll() {
-		return (Collection<T>) repository.findAll();
+	public Flux<T> findAll() {
+		return repository.findAll();
+	}
+
+	private T processMonoOnNext(T entity, T t) {
+//		entity = t;
+		return (entity = t);
 	}
 
 	@Override
 	public T findByEntityId(String id) {
-		return repository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("Unable to find entity with id: %s", id)));
+		T entity = null;
+		repository.findById(id).subscribe(
+				//o -> prcoessOnNext(o),
+				//e -> processError(e),
+				//() -> processCompletion(),
+				//d -> processSubscription()
+				t -> processMonoOnNext(entity, t)
+				);
+		return entity;
 	}
 
 	public T findByNodeUid(String nodeUid) {
-		return repository.findByNodeUid(nodeUid).orElseThrow(() -> new EntityNotFoundException(String.format("Unable to find entity with nodeUid: %s", nodeUid)));
+		return repository.findByNodeUid(nodeUid)
+				.blockOptional()
+				.orElseThrow(
+						() -> new EntityNotFoundException(
+								String.format("Unable to find entity with nodeUid: %s", nodeUid)));
 	}
 
 	public T saveEntity(T entity) {
 		if(log.isTraceEnabled()) {
 			log.trace("Saving entity: {}", entity);
 		}
-		entity = repository.save(entity);
+		repository.save(entity).subscribe(
+				t -> processMonoOnNext(entity, t));
 		if(log.isDebugEnabled()) {
 			log.debug("Saved entity: {}", entity);
 		}
-		return repository.save(entity);
+		return entity;
 	}
 
 }

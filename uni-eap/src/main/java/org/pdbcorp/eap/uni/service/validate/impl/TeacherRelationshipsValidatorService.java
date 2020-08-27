@@ -19,6 +19,7 @@ package org.pdbcorp.eap.uni.service.validate.impl;
 
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.data.model.Teacher;
+import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.validate.ValidateEntityRelationshipsService;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,15 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 class TeacherRelationshipsValidatorService implements ValidateEntityRelationshipsService<Teacher> {
 
+	private GenerateNodeUidService<Person> personNodeUidGeneratorService;
 	private ValidateNodeUidService<Person> personNodeUidValidatorService;
 
 	@Autowired
 	TeacherRelationshipsValidatorService(
+			@Qualifier("personNodeUidGeneratorService") GenerateNodeUidService<Person> personNodeUidGeneratorService,
 			@Qualifier("personNodeUidValidatorService") ValidateNodeUidService<Person> personNodeUidValidatorService) {
 		
+		this.personNodeUidGeneratorService = personNodeUidGeneratorService;
 		this.personNodeUidValidatorService = personNodeUidValidatorService;
 	}
 
@@ -50,6 +54,7 @@ class TeacherRelationshipsValidatorService implements ValidateEntityRelationship
 			if(log.isTraceEnabled()) {
 				log.trace("Updating entity: {}", teacher);
 			}
+			teacher.getPerson().setNodeUid(personNodeUidGeneratorService.generateNodeUid(teacher.getPerson()));
 			teacher.setPerson(personNodeUidValidatorService.validateNodeUid(teacher.getPerson()));
 			if(log.isDebugEnabled()) {
 				log.debug("Updated entity: {}", teacher);

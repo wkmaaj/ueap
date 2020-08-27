@@ -17,11 +17,10 @@
  */
 package org.pdbcorp.eap.uni.data.model;
 
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.Index;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.id.UuidStrategy;
+import org.neo4j.springframework.data.core.schema.GeneratedValue;
+import org.neo4j.springframework.data.core.schema.Id;
+import org.neo4j.springframework.data.core.schema.Property;
+import org.neo4j.springframework.data.core.support.UUIDStringGenerator;
 
 import lombok.NonNull;
 
@@ -32,12 +31,12 @@ import lombok.NonNull;
 abstract class GeneratedValueIdEntity implements BaseEntity {
 
 	@Id
-	@GeneratedValue(strategy=UuidStrategy.class)
+	@GeneratedValue(UUIDStringGenerator.class)
 	private String id;
 
-	@Index(unique=true)
+//	@Indexed(unique=true)
 	@NonNull
-	@Property(name="NODE_UID")
+	@Property(name = "NODE_UID")
 	private String nodeUid;
 
 	public String getId() {

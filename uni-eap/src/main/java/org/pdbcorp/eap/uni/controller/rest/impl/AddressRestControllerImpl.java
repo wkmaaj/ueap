@@ -17,8 +17,6 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
-import java.util.Collection;
-
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.AddressRestController;
@@ -31,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
+import reactor.core.publisher.Flux;
+
 /**
  * 
  * @author jaradat-pdb
@@ -38,26 +38,26 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class AddressRestControllerImpl implements AddressRestController {
 
-	private AddressDetailsRetrieverService addressDetailsService;
+	private AddressDetailsRetrieverService addressDetailsRetrieverService;
 	private AddEntityProcessFlow<Address> addAddressProcessFlow;
 
 	@Autowired
 	public AddressRestControllerImpl(
-			AddressDetailsRetrieverService addressDetailsService,
+			AddressDetailsRetrieverService addressDetailsRetrieverService,
 			@Qualifier("addAddressProcessFlow") AddEntityProcessFlow<Address> addAddressProcessFlow) {
 		
-		this.addressDetailsService = addressDetailsService;
+		this.addressDetailsRetrieverService = addressDetailsRetrieverService;
 		this.addAddressProcessFlow = addAddressProcessFlow;
 	}
 
 	@Override
-	public Collection<Address> findAll() {
-		return addressDetailsService.findAll();
+	public Flux<Address> findAll() {
+		return addressDetailsRetrieverService.findAll();
 	}
 
 	@Override
 	public Response findByAddrLine1(String addrLine1) {
-		return Response.ok(addressDetailsService.findByAddrLine1(addrLine1)).build();
+		return Response.ok(addressDetailsRetrieverService.findByAddrLine1(addrLine1)).build();
 	}
 
 	@Override
@@ -67,16 +67,16 @@ public class AddressRestControllerImpl implements AddressRestController {
 
 	@Override
 	public Response updateWithPerson(String id, Person person) {
-		Address address = addressDetailsService.findByEntityId(id);
+		Address address = addressDetailsRetrieverService.findByEntityId(id);
 		address.getPersons().add(person);
-		return Response.ok(addressDetailsService.saveEntity(address)).build();
+		return Response.ok(addressDetailsRetrieverService.saveEntity(address)).build();
 	}
 
 	@Override
 	public Response updateWithUniversity(String id, University university) {
-		Address address = addressDetailsService.findByEntityId(id);
+		Address address = addressDetailsRetrieverService.findByEntityId(id);
 		address.setUniversity(university);
-		return Response.ok(addressDetailsService.saveEntity(address)).build();
+		return Response.ok(addressDetailsRetrieverService.saveEntity(address)).build();
 	}
 
 }

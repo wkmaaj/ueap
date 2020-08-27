@@ -35,6 +35,8 @@ import org.pdbcorp.eap.uni.data.model.Student;
 import org.pdbcorp.eap.uni.data.repo.StudentRepository;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
+import reactor.core.publisher.Mono;
+
 /**
  * 
  * @author jaradat-pdb
@@ -44,6 +46,8 @@ class StudentDetailsRetrieverServiceTest {
 
 	@Mock
 	private StudentRepository repository;
+	@Mock
+	private Mono<Student> mockMono;
 
 	@InjectMocks
 	private StudentDetailsRetrieverService service = new StudentDetailsRetrieverService(repository);
@@ -61,7 +65,7 @@ class StudentDetailsRetrieverServiceTest {
 	@Test
 	void validSaveEntityTest() throws Exception {
 		Student expected = TestDataFactoryUtil.generateStudentInstanceWithPerson();
-		when(repository.save(any())).thenReturn(expected);
+		when(repository.save(any())).thenReturn(mockMono);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

@@ -17,15 +17,17 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
-import java.util.Collection;
-
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.UniversityRestController;
 import org.pdbcorp.eap.uni.data.model.University;
+import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.retrieve.impl.UniversityDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -34,26 +36,31 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class UniversityRestControllerImpl implements UniversityRestController {
 
-	private UniversityDetailsRetrieverService universityDetailsService;
+	private UniversityDetailsRetrieverService universityDetailsRetrieverService;
+	private AddEntityProcessFlow<University> addUniversityProcessFlow;
 
 	@Autowired
-	public UniversityRestControllerImpl(UniversityDetailsRetrieverService universityDetailsService) {
-		this.universityDetailsService = universityDetailsService;
+	public UniversityRestControllerImpl(
+			UniversityDetailsRetrieverService universityDetailsRetrieverService,
+			@Qualifier("addUniversityProcessFlow") AddEntityProcessFlow<University> addUniversityProcessFlow) {
+		
+		this.universityDetailsRetrieverService = universityDetailsRetrieverService;
+		this.addUniversityProcessFlow = addUniversityProcessFlow;
 	}
 
 	@Override
-	public Collection<University> findAll() {
-		return universityDetailsService.findAll();
+	public Flux<University> findAll() {
+		return universityDetailsRetrieverService.findAll();
 	}
 
 	@Override
 	public Response findByName(String name) {
-		return Response.ok(universityDetailsService.findByName(name)).build();
+		return Response.ok(universityDetailsRetrieverService.findByName(name)).build();
 	}
 
 	@Override
 	public Response saveUniversity(University university) {
-		return Response.ok(universityDetailsService.saveEntity(university)).build();
+		return Response.ok(addUniversityProcessFlow.execute(university)).build();
 	}
 
 }

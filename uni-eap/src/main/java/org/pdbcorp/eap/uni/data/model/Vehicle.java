@@ -17,9 +17,9 @@
  */
 package org.pdbcorp.eap.uni.data.model;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.springframework.data.core.schema.Node;
+import org.neo4j.springframework.data.core.schema.Property;
+import org.neo4j.springframework.data.core.schema.Relationship;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -36,36 +36,36 @@ import lombok.Setter;
  * @author jaradat-pdb
  */
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Getter
-@NodeEntity(label="VEHICLE")
+@Node(primaryLabel = "VEHICLE")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 public class Vehicle extends GeneratedValueIdEntity {
 
 	@NonNull
-	@Property(name="MAKE")
+	@Property(name = "MAKE")
 	private String make;
 
 	@NonNull
-	@Property(name="MODEL")
+	@Property(name = "MODEL")
 	private String model;
 
 	@NonNull
-	@Property(name="YEAR")
+	@Property(name = "YEAR")
 	private Long year;
 
 	@NonNull
-	@Property(name="LICENSE_PLATE")
+	@Property(name = "LICENSE_PLATE")
 	private String licensePlate;
 
 	@NonNull
-	@Property(name="VEHICLE_ID_NUMBER")
+	@Property(name = "VEHICLE_ID_NUMBER")
 	private String vin;
 
 	@JsonIgnoreProperties("vehicle")
-	@Relationship(type="OWNED_VEHICLE", direction=Relationship.INCOMING)
+	@Relationship(type = "OWNED_VEHICLE", direction=Relationship.Direction.INCOMING)
 	private Person person;
 
 	@Override

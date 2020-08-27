@@ -17,8 +17,6 @@
  */
 package org.pdbcorp.eap.uni.controller.rest;
 
-import java.util.Collection;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PATCH;
@@ -33,6 +31,8 @@ import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.data.model.University;
 
+import reactor.core.publisher.Flux;
+
 /**
  * 
  * @author jaradat-pdb
@@ -44,7 +44,7 @@ public interface AddressRestController {
 
 	@GET
 	@Path("/find")
-	Collection<Address> findAll();
+	Flux<Address> findAll();
 
 	@GET
 	@Path("/find/{addrLine1}")

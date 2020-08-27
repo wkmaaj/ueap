@@ -22,9 +22,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.springframework.data.core.schema.Node;
+import org.neo4j.springframework.data.core.schema.Property;
+import org.neo4j.springframework.data.core.schema.Relationship;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -41,25 +41,25 @@ import lombok.Setter;
  * @author jaradat-pdb
  */
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Getter
-@NodeEntity(label="UNIVERSITY")
+@Node(primaryLabel = "UNIVERSITY")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 public class University extends GeneratedValueIdEntity {
 
 	@NonNull
-	@Property(name="NAME")
+	@Property(name = "NAME")
 	private String name;
 
 	@JsonIgnoreProperties("university")
-	@Relationship(type="UNI_ADDRESS")
+	@Relationship(type = "UNI_ADDRESS", direction = Relationship.Direction.OUTGOING)
 	private Address address;
 
 	@EqualsAndHashCode.Exclude
 	@JsonIgnoreProperties("university")
-	@Relationship(type="UNI_DEPARTMENT", direction=Relationship.INCOMING)
+	@Relationship(type = "UNI_DEPARTMENT", direction = Relationship.Direction.INCOMING)
 	private Set<Department> departments = new HashSet<>();
 
 	@Override

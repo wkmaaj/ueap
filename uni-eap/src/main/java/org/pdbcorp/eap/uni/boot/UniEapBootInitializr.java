@@ -79,7 +79,7 @@ public class UniEapBootInitializr implements CommandLineRunner {
 	}
 
 	private Address generateAddressEntity() {
-		return addressRepository.save(new Address("123 Fake St", "Irbid", "Jordan"));
+		return addressRepository.save(new Address("123 Fake St", "Irbid", "Jordan")).block();
 	}
 
 }

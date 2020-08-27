@@ -17,8 +17,6 @@
  */
 package org.pdbcorp.eap.uni.controller.rest;
 
-import java.util.Collection;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,6 +27,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.data.model.Course;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -41,7 +41,7 @@ public interface CourseRestController {
 
 	@GET
 	@Path("/find")
-	Collection<Course> findAll();
+	Flux<Course> findAll();
 
 	@GET
 	@Path("/find/{name}")

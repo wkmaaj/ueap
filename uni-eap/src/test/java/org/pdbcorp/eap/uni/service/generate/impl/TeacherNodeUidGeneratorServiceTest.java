@@ -25,7 +25,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.pdbcorp.eap.uni.data.model.University;
+import org.pdbcorp.eap.uni.data.model.Teacher;
 import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
@@ -34,14 +34,14 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
  * @author jaradat-pdb
  */
 @ExtendWith(MockitoExtension.class)
-class UniversityNodeUidGenerationServiceTest {
+class TeacherNodeUidGeneratorServiceTest {
 
-	private GenerateNodeUidService<University> service = new UniversityNodeUidGenerationService();
+	private GenerateNodeUidService<Teacher> service = new TeacherNodeUidGeneratorService();
 
-	@DisplayName("Successfully generate a NODE_UID string for a UNIVERSITY entity")
+	@DisplayName("Successfully generate a NODE_UID string for a STUDENT entity")
 	@Test
 	void validGenerateNodeUid() throws Exception {
-		University entity = TestDataFactoryUtil.generateUniversityInstanceWithAddress();
+		Teacher entity = TestDataFactoryUtil.generateTeacherInstanceWithPerson();
 		String nodeUid = service.generateNodeUid(entity);
 		assertFalse(StringUtils.isBlank(nodeUid));
 		assertTrue(nodeUid.contains(entity.getName()));

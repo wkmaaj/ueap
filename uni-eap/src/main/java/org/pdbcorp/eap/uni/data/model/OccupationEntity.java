@@ -17,7 +17,7 @@
  */
 package org.pdbcorp.eap.uni.data.model;
 
-import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.springframework.data.core.schema.Relationship;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -33,7 +33,7 @@ import lombok.Setter;
 public abstract class OccupationEntity extends GeneratedValueIdEntity {
 
 	@JsonIgnoreProperties("occupation")
-	@Relationship(type="CURRENT_OCCUPATION")
+	@Relationship(type = "CURRENT_OCCUPATION", direction = Relationship.Direction.OUTGOING)
 	private Person person;
 
 }

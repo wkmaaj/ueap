@@ -20,6 +20,7 @@ package org.pdbcorp.eap.uni.service.validate.impl;
 import org.pdbcorp.eap.uni.data.model.Course;
 import org.pdbcorp.eap.uni.data.model.Subject;
 import org.pdbcorp.eap.uni.data.model.Teacher;
+import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.service.validate.ValidateEntityRelationshipsService;
 import org.pdbcorp.eap.uni.service.validate.ValidateNodeUidService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +37,21 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 class CourseRelationshipsValidatorService implements ValidateEntityRelationshipsService<Course> {
 
+	private GenerateNodeUidService<Subject> subjectNodeUidGeneratorService;
 	private ValidateNodeUidService<Subject> subjectNodeUidValidatorService;
+	private GenerateNodeUidService<Teacher> teacherNodeUidGeneratorService;
 	private ValidateNodeUidService<Teacher> teacherNodeUidValidatorService;
 
 	@Autowired
 	CourseRelationshipsValidatorService(
+			@Qualifier("subjectNodeUidGeneratorService") GenerateNodeUidService<Subject> subjectNodeUidGeneratorService,
 			@Qualifier("subjectNodeUidValidatorService") ValidateNodeUidService<Subject> subjectNodeUidValidatorService,
+			@Qualifier("teacherNodeUidGeneratorService") GenerateNodeUidService<Teacher> teacherNodeUidGeneratorService,
 			@Qualifier("teacherNodeUidValidatorService") ValidateNodeUidService<Teacher> teacherNodeUidValidatorService) {
 		
+		this.subjectNodeUidGeneratorService = subjectNodeUidGeneratorService;
 		this.subjectNodeUidValidatorService = subjectNodeUidValidatorService;
+		this.teacherNodeUidGeneratorService = teacherNodeUidGeneratorService;
 		this.teacherNodeUidValidatorService = teacherNodeUidValidatorService;
 	}
 
@@ -54,6 +61,7 @@ class CourseRelationshipsValidatorService implements ValidateEntityRelationships
 			if(log.isTraceEnabled()) {
 				log.trace("Updating entity: {}", course);
 			}
+			course.getSubject().setNodeUid(subjectNodeUidGeneratorService.generateNodeUid(course.getSubject()));
 			course.setSubject(subjectNodeUidValidatorService.validateNodeUid(course.getSubject()));
 			if(log.isDebugEnabled()) {
 				log.debug("Updated entity: {}", course);
@@ -64,6 +72,7 @@ class CourseRelationshipsValidatorService implements ValidateEntityRelationships
 			if(log.isTraceEnabled()) {
 				log.trace("Updating entity: {}", course);
 			}
+			course.getTeacher().setNodeUid(teacherNodeUidGeneratorService.generateNodeUid(course.getTeacher()));
 			course.setTeacher(teacherNodeUidValidatorService.validateNodeUid(course.getTeacher()));
 			if(log.isDebugEnabled()) {
 				log.debug("Updated entity: {}", course);

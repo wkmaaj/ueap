@@ -17,18 +17,20 @@
  */
 package org.pdbcorp.eap.uni.data.repo;
 
-import java.util.Optional;
-
+import org.neo4j.springframework.data.repository.ReactiveNeo4jRepository;
 import org.pdbcorp.eap.uni.data.model.BaseEntity;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.Param;
+
+import reactor.core.publisher.Mono;
 
 /**
  * 
  * @author jaradat-pdb
  */
-public interface BaseEntityRepository<T extends BaseEntity> extends Neo4jRepository<T, String> {
+@NoRepositoryBean
+public interface BaseEntityRepository<T extends BaseEntity> extends ReactiveNeo4jRepository<T, String> {
 
-	public Optional<T> findByNodeUid(@Param("nodeUid") String nodeUid);
+	public Mono<T> findByNodeUid(@Param("nodeUid") String nodeUid);
 
 }

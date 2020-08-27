@@ -22,9 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,15 +32,22 @@ import org.pdbcorp.eap.uni.data.model.Address;
 import org.pdbcorp.eap.uni.data.repo.AddressRepository;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 /**
  * 
  * @author jaradat-pdb
  */
 @ExtendWith(MockitoExtension.class)
+@Slf4j
 class AddressDetailsRetrieverServiceTest {
 
 	@Mock
 	private AddressRepository repository;
+	@Mock
+	private Mono<Address> mockMono;
 
 	@InjectMocks
 	private AddressDetailsRetrieverService service = new AddressDetailsRetrieverService(repository);
@@ -52,16 +56,20 @@ class AddressDetailsRetrieverServiceTest {
 	@Test
 	void validFindByAddrLine1Test() throws Exception {
 		Address expected = TestDataFactoryUtil.generateAddressStateInstance();
-		when(repository.findByAddrLine1(expected.getAddrLine1())).thenReturn(Arrays.asList(expected));
-		Collection<Address> result = service.findByAddrLine1(expected.getAddrLine1());
-		assertTrue(result.contains(expected));
+		Flux<Address> flux = Flux.just(expected);
+		when(repository.findByAddrLine1(expected.getAddrLine1())).thenReturn(flux);
+		Flux<Address> result = service.findByAddrLine1(expected.getAddrLine1());
+		result.hasElement(expected).subscribe(
+				value -> assertTrue(value),
+				error -> log.error("{}", error),
+				() -> log.warn("Completed without value nor error"));
 	}
 
 	@DisplayName("Successfully save an ADDRESS node via the details service")
 	@Test
 	void validValidateAndSaveTest() throws Exception {
 		Address expected = TestDataFactoryUtil.generateAddressProvinceInstance();
-		when(repository.save(any())).thenReturn(expected);
+		when(repository.save(any())).thenReturn(mockMono);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

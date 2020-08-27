@@ -17,11 +17,11 @@
  */
 package org.pdbcorp.eap.uni.data.repo;
 
-import java.util.Collection;
-
 import org.pdbcorp.eap.uni.data.model.Address;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -30,8 +30,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AddressRepository extends BaseEntityRepository<Address> {
 
-	public Collection<Address> findByAddrLine1(@Param("addrLine1") String addrLine1);
+	public Flux<Address> findByAddrLine1(@Param("addrLine1") String addrLine1);
 
-	public Collection<Address> findByAddrLine1AndCityAndCountry(@Param("addrLine1") String addrLine1, @Param("city") String city, @Param("country") String country);
+	public Flux<Address> findByAddrLine1AndCityAndCountry(@Param("addrLine1") String addrLine1, @Param("city") String city, @Param("country") String country);
 
 }

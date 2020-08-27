@@ -25,7 +25,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.pdbcorp.eap.uni.data.model.Vehicle;
+import org.pdbcorp.eap.uni.data.model.Person;
 import org.pdbcorp.eap.uni.service.generate.GenerateNodeUidService;
 import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
 
@@ -34,21 +34,20 @@ import org.pdbcorp.eap.uni.util.TestDataFactoryUtil;
  * @author jaradat-pdb
  */
 @ExtendWith(MockitoExtension.class)
-class VehicleNodeUidGenerationServiceTest {
+class PersonNodeUidGeneratorServiceTest {
 
-	private GenerateNodeUidService<Vehicle> service = new VehicleNodeUidGenerationService();
+	private GenerateNodeUidService<Person> service = new PersonNodeUidGeneratorService();
 
-	@DisplayName("Successfully generate a NODE_UID string for a VEHICLE entity")
+	@DisplayName("Successfully generate a NODE_UID string for a PERSON entity")
 	@Test
 	void validGenerateNodeUidAddressState() throws Exception {
-		Vehicle entity = TestDataFactoryUtil.generateVehicleInstanceWithPerson();
+		Person entity = TestDataFactoryUtil.generatePersonInstance();
 		String nodeUid = service.generateNodeUid(entity);
 		assertFalse(StringUtils.isBlank(nodeUid));
-		assertTrue(nodeUid.contains(entity.getMake()));
-		assertTrue(nodeUid.contains(entity.getModel()));
-		assertTrue(nodeUid.contains(String.valueOf(entity.getYear())));
-		assertTrue(nodeUid.contains(entity.getLicensePlate()));
-		assertTrue(nodeUid.contains(entity.getVin()));
+		assertTrue(nodeUid.contains(entity.getFname()));
+		assertTrue(nodeUid.contains(entity.getMname()));
+		assertTrue(nodeUid.contains(entity.getLname()));
+		assertTrue(nodeUid.contains(entity.getGender().getName()));
 	}
 
 }

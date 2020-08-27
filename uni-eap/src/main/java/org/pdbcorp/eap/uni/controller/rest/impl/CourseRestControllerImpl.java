@@ -17,15 +17,17 @@
  */
 package org.pdbcorp.eap.uni.controller.rest.impl;
 
-import java.util.Collection;
-
 import javax.ws.rs.core.Response;
 
 import org.pdbcorp.eap.uni.controller.rest.CourseRestController;
 import org.pdbcorp.eap.uni.data.model.Course;
+import org.pdbcorp.eap.uni.process.flow.AddEntityProcessFlow;
 import org.pdbcorp.eap.uni.service.retrieve.impl.CourseDetailsRetrieverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -34,26 +36,31 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class CourseRestControllerImpl implements CourseRestController {
 
-	private CourseDetailsRetrieverService courseDetailsService;
+	private CourseDetailsRetrieverService courseDetailsRetrieverService;
+	private AddEntityProcessFlow<Course> addCourseProcessFlow;
 
 	@Autowired
-	public CourseRestControllerImpl(CourseDetailsRetrieverService courseDetailsService) {
-		this.courseDetailsService = courseDetailsService;
+	public CourseRestControllerImpl(
+			CourseDetailsRetrieverService courseDetailsRetrieverService,
+			@Qualifier("addCourseProcessFlow") AddEntityProcessFlow<Course> addCourseProcessFlow) {
+		
+		this.courseDetailsRetrieverService = courseDetailsRetrieverService;
+		this.addCourseProcessFlow = addCourseProcessFlow;
 	}
 
 	@Override
-	public Collection<Course> findAll() {
-		return courseDetailsService.findAll();
+	public Flux<Course> findAll() {
+		return courseDetailsRetrieverService.findAll();
 	}
 
 	@Override
 	public Response findByName(String name) {
-		return Response.ok(courseDetailsService.findByName(name)).build();
+		return Response.ok(courseDetailsRetrieverService.findByName(name)).build();
 	}
 
 	@Override
 	public Response saveCourse(Course course) {
-		return Response.ok(courseDetailsService.saveEntity(course)).build();
+		return Response.ok(addCourseProcessFlow.execute(course)).build();
 	}
 
 }
