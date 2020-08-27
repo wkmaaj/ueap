@@ -66,7 +66,6 @@ class TeacherDetailsRetrieverServiceTest {
 	void validSaveEntityTest() throws Exception {
 		Teacher expected = TestDataFactoryUtil.generateTeacherInstanceWithPerson();
 		when(repository.save(any())).thenReturn(mockMono);
-		when(mockMono.block()).thenReturn(expected);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

@@ -62,7 +62,6 @@ class UniversityDetailsRetrieverServiceTest {
 	void validSaveEntityTest() throws Exception {
 		University expected = TestDataFactoryUtil.generateUniversityInstanceWithAddress();
 		when(repository.save(any())).thenReturn(mockMono);
-		when(mockMono.block()).thenReturn(expected);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

@@ -66,7 +66,6 @@ class VehicleDetailsRetrieverServiceTest {
 	void validSaveEntityTest() throws Exception {
 		Vehicle expected = TestDataFactoryUtil.generateVehicleInstance();
 		when(repository.save(any())).thenReturn(mockMono);
-		when(mockMono.block()).thenReturn(expected);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

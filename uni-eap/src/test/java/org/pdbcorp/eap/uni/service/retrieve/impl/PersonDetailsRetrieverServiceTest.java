@@ -66,7 +66,6 @@ class PersonDetailsRetrieverServiceTest {
 	void validSaveEntityTest() throws Exception {
 		Person expected = TestDataFactoryUtil.generatePersonInstance();
 		when(repository.save(any())).thenReturn(mockMono);
-		when(mockMono.block()).thenReturn(expected);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

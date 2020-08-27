@@ -70,7 +70,6 @@ class AddressDetailsRetrieverServiceTest {
 	void validValidateAndSaveTest() throws Exception {
 		Address expected = TestDataFactoryUtil.generateAddressProvinceInstance();
 		when(repository.save(any())).thenReturn(mockMono);
-		when(mockMono.block()).thenReturn(expected);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

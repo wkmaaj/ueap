@@ -66,7 +66,6 @@ class SubjectDetailsRetrieverServiceTest {
 	void validSaveEntityTest() throws Exception {
 		Subject expected = TestDataFactoryUtil.generateSubjectInstanceWithDepartment();
 		when(repository.save(any())).thenReturn(mockMono);
-		when(mockMono.block()).thenReturn(expected);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 

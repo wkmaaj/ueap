@@ -66,7 +66,6 @@ class DepartmentDetailsRetrieverServiceTest {
 	void validSaveEntityTest() throws Exception {
 		Department expected = TestDataFactoryUtil.generateDepartmentInstanceWithUniversity();
 		when(repository.save(any())).thenReturn(mockMono);
-		when(mockMono.block()).thenReturn(expected);
 		assertEquals(expected, service.saveEntity(expected));
 	}
 
