@@ -40,6 +40,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+			<version>${cxf-jaxrs.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-rs-service-description</artifactId>
 			<version>${cxf-jaxrs.version}</version>
 		</dependency>
