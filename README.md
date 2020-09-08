@@ -48,6 +48,7 @@ curl -L https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download
 ```
 
 ### Docker
+For Linux and Windows (and probably Mac :astonished:)
 ```sh
 docker run -p 7474:7474 -p 7687:7687 --volume=/workspace/docker/pdbneo/data:/var/lib/neo4j/data --volume=/workspace/docker/pdbneo/plugins:/var/lib/neo4j/plugins -e NEO4J_AUTH=neo4j/admin --env NEO4J_dbms_security_procedures_unrestricted=apoc.* --name pdbneo -d neo4j:latest
 ```
