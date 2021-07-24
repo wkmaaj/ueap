@@ -58,5 +58,3 @@ build/
 
 # Notes
 json-data-model*.txt
-
-.env*
