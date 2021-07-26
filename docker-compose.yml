@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  mongo-local:
+    container_name: ueapdb
+    command: ""
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+    volumes:
+      - "./docker/dynamodb:/home/mongo/data"
+    working_dir: /home/mongo
