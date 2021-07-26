@@ -3,7 +3,7 @@ version: "3.8"
 services:
   mongo-local:
     image: "mongo:latest"
-    container_name: ueapdb
+    container_name: ueap.db.mongo
     environment:
       - MONGO_INITDB_DATABASE=ueap-auth
       - MONGO_INITDB_ROOT_USERNAME=admin
