@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  mongo-local:
+    image: "mongo:latest"
+    container_name: ueapdb
+    environment:
+      - MONGO_INITDB_DATABASE=ueap-auth
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=pwd123
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./docker/mongodb:/data/db
+#    working_dir: /home/mongo
