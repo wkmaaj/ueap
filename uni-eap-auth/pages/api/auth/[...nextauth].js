@@ -11,6 +11,11 @@ export default NextAuth({
   database: process.env.MONGODB_URI,
   debug: true,
   providers: [
+    Providers.Atlassian({
+      clientId: process.env.ATLASSIAN_ID,
+      clientSecret: process.env.ATLASSIAN_SECRET,
+      scope: "read:me",
+    }),
     Providers.Email({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
