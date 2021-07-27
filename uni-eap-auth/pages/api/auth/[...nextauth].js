@@ -2,6 +2,14 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 
 export default NextAuth({
+  callbacks: {
+    session: async (session, user) => {
+      session.id = user.id;
+      return Promise.resolve(session);
+    },
+  },
+  database: process.env.MONGODB_URI,
+  debug: true,
   providers: [
     Providers.Email({
       server: {
@@ -27,11 +35,4 @@ export default NextAuth({
       clientSecret: process.env.TWITTER_SECRET,
     }),
   ],
-  database: process.env.MONGODB_URI,
-  callbacks: {
-    session: async (session, user) => {
-      session.id = user.id;
-      return Promise.resolve(session);
-    },
-  },
 });
