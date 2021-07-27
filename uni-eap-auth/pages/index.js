@@ -10,12 +10,29 @@ export default function Home() {
         {!session && (
           <>
             Not signed in <br />
+            <br />
+            <button
+              onClick={() =>
+                signIn("github", { callbackUrl: "http://localhost:3000/" })
+              }
+            >
+              Sign In with GitHub
+            </button>
+            <br />
             <button
               onClick={() =>
                 signIn("google", { callbackUrl: "http://localhost:3000/" })
               }
             >
-              Sign In
+              Sign In with Google
+            </button>
+            <br />
+            <button
+              onClick={() =>
+                signIn("twitter", { callbackUrl: "http://localhost:3000/" })
+              }
+            >
+              Sign In with Twitter
             </button>
           </>
         )}
