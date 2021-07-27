@@ -2,7 +2,20 @@ import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
 
 export default NextAuth({
+  callbacks: {
+    session: async (session, user) => {
+      session.id = user.id;
+      return Promise.resolve(session);
+    },
+  },
+  database: process.env.MONGODB_URI,
+  debug: true,
   providers: [
+    Providers.Atlassian({
+      clientId: process.env.ATLASSIAN_ID,
+      clientSecret: process.env.ATLASSIAN_SECRET,
+      scope: "read:me",
+    }),
     Providers.Email({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
@@ -27,11 +40,4 @@ export default NextAuth({
       clientSecret: process.env.TWITTER_SECRET,
     }),
   ],
-  database: process.env.MONGODB_URI,
-  callbacks: {
-    session: async (session, user) => {
-      session.id = user.id;
-      return Promise.resolve(session);
-    },
-  },
 });
