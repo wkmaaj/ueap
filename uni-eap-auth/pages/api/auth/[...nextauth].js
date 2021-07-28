@@ -9,7 +9,7 @@ export default NextAuth({
     },
   },
   database: process.env.MONGODB_URI,
-  debug: true,
+  debug: false,
   providers: [
     Providers.Atlassian({
       clientId: process.env.ATLASSIAN_ID,
