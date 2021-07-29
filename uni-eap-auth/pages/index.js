@@ -21,7 +21,7 @@ export default function Home() {
               <br />
               <button
                 onClick={() =>
-                  signIn("auth0", { callbackUrl: process.env.CALLBACK_URL })
+                  signIn("auth0", { callbackUrl: process.env.NEXTAUTH_URL })
                 }
               >
                 Sign In with Auth0
@@ -29,7 +29,7 @@ export default function Home() {
               <br />
               <button
                 onClick={() =>
-                  signIn("github", { callbackUrl: process.env.CALLBACK_URL })
+                  signIn("github", { callbackUrl: process.env.NEXTAUTH_URL })
                 }
               >
                 Sign In with GitHub
@@ -37,7 +37,7 @@ export default function Home() {
               <br />
               <button
                 onClick={() =>
-                  signIn("google", { callbackUrl: process.env.CALLBACK_URL })
+                  signIn("google", { callbackUrl: process.env.NEXTAUTH_URL })
                 }
               >
                 Sign In with Google
@@ -45,7 +45,7 @@ export default function Home() {
               <br />
               <button
                 onClick={() =>
-                  signIn("twitter", { callbackUrl: process.env.CALLBACK_URL })
+                  signIn("twitter", { callbackUrl: process.env.NEXTAUTH_URL })
                 }
               >
                 Sign In with Twitter
