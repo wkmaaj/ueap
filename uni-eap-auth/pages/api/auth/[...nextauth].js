@@ -11,21 +11,21 @@ export default NextAuth({
   database: process.env.MONGODB_URI,
   debug: false,
   providers: [
-    Providers.Atlassian({
-      clientId: process.env.ATLASSIAN_ID,
-      clientSecret: process.env.ATLASSIAN_SECRET,
-      scope: "read:me",
-    }),
     Providers.Email({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
         port: process.env.EMAIL_SERVER_PORT,
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASS,
         },
       },
       from: process.env.EMAIL_FROM,
+    }),
+    Providers.Atlassian({
+      clientId: process.env.ATLASSIAN_ID,
+      clientSecret: process.env.ATLASSIAN_SECRET,
+      scope: "read:me",
     }),
     Providers.GitHub({
       clientId: process.env.GITHUB_ID,

@@ -42,6 +42,10 @@ export default function Home() {
               >
                 Sign In with Twitter
               </button>
+              <br />
+              <button>
+                <Link href="/api/auth/signin">Sign Up with Email</Link>
+              </button>
             </>
           )}
           {session && (
