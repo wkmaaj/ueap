@@ -21,7 +21,15 @@ export default function Home() {
               <br />
               <button
                 onClick={() =>
-                  signIn("github", { callbackUrl: "http://localhost:3000/" })
+                  signIn("auth0", { callbackUrl: process.env.CALLBACK_URL })
+                }
+              >
+                Sign In with Auth0
+              </button>
+              <br />
+              <button
+                onClick={() =>
+                  signIn("github", { callbackUrl: process.env.CALLBACK_URL })
                 }
               >
                 Sign In with GitHub
@@ -29,7 +37,7 @@ export default function Home() {
               <br />
               <button
                 onClick={() =>
-                  signIn("google", { callbackUrl: "http://localhost:3000/" })
+                  signIn("google", { callbackUrl: process.env.CALLBACK_URL })
                 }
               >
                 Sign In with Google
@@ -37,7 +45,7 @@ export default function Home() {
               <br />
               <button
                 onClick={() =>
-                  signIn("twitter", { callbackUrl: "http://localhost:3000/" })
+                  signIn("twitter", { callbackUrl: process.env.CALLBACK_URL })
                 }
               >
                 Sign In with Twitter

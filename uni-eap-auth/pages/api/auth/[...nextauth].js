@@ -22,10 +22,10 @@ export default NextAuth({
       },
       from: process.env.EMAIL_FROM,
     }),
-    Providers.Atlassian({
-      clientId: process.env.ATLASSIAN_ID,
-      clientSecret: process.env.ATLASSIAN_SECRET,
-      scope: "read:me",
+    Providers.Auth0({
+      clientId: process.env.AUTH0_ID,
+      clientSecret: process.env.AUTH0_SECRET,
+      domain: process.env.AUTH0_DOMAIN,
     }),
     Providers.GitHub({
       clientId: process.env.GITHUB_ID,
