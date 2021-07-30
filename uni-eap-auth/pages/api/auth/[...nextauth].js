@@ -10,6 +10,9 @@ export default NextAuth({
   },
   database: process.env.MONGODB_URI,
   debug: false,
+  pages: {
+    signIn: "/signin",
+  },
   providers: [
     Providers.Email({
       server: {
