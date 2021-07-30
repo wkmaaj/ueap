@@ -7,7 +7,7 @@ import {
 } from "next-auth/client";
 
 export default function SignIn({ providers, csrfToken }) {
-  return <Container></Container>;
+  return;
 }
 
 SignIn.getInitialProps = async (context) => {
