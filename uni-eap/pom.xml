@@ -16,7 +16,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 	<description>University Enterprise Application Platform</description>
 
 	<properties>
-		<cxf-jaxrs.version>3.3.7</cxf-jaxrs.version>
+		<cxf-jaxrs.version>3.5.9</cxf-jaxrs.version>
 		<java.version>11</java.version>
 		<neo4j-harness.version>3.2.14</neo4j-harness.version>
 		<spring-data-neo4j-rx.version>1.1.1</spring-data-neo4j-rx.version>
